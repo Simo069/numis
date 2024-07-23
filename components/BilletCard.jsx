@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 
 
-export default function BilletCard({ imagefront,title ,ref }) {
+export default function BilletCard({ imagefront,title,ref }) {
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl cursor-pointer">
       <img

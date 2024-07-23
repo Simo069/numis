@@ -1,6 +1,6 @@
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import { GoArrowRight } from "react-icons/go";
-import { useState } from "react";
+import React , {useState} from "react";
 import Image from "next/image";
 
 export default function billetmonnie() {
@@ -13,7 +13,33 @@ export default function billetmonnie() {
     image: "/riffImages/1riffanFront.png",
     printer: "bank al riff",
   };
-  const data = [{ id: "1" }, { id: "1" }, { id: "1" }, { id: "1" }];
+  const items =[
+    {
+      ref: "#1",
+      type: "Issued",
+      date: "10-10-23",
+      comments: "sekkat & lazrrak",
+      image: "/riffImages/1riffanFront.png",
+      printer: "bank al riff",
+    },
+    {
+      ref: "#2",
+      type: "Issued",
+      date: "10-10-23",
+      comments: "med & lazrrak",
+      image: "/riffImages/1riffanFront.png",
+      printer: "bank al riff",
+    },
+    {
+      ref: "#3",
+      type: "Issued",
+      date: "10-10-23",
+      comments: "med & lazrrak",
+      image: "/riffImages/1riffanFront.png",
+      printer: "bank al riff",
+    }
+  ];
+  const data = [{ id: "1" }, { id: "2" }, { id: "3" }];
 
   return (
     <section>
@@ -118,3 +144,4 @@ export default function billetmonnie() {
     </section>
   );
 }
+

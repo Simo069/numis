@@ -47,3 +47,48 @@ model User {
   profile   String   @default("")
   role      Role     @default(CLIENT)
 }
+
+model Currency {
+  id            Int      @id @default(autoincrement())
+  title         String   @default("")
+  bank_name     String   @default("")
+  currency      String   @default("")
+  date_issue    String   @default("")
+  image         String
+  currencies    Currencies[]
+}
+
+model Currencies {
+  id                  Int      @id @default(autoincrement())
+  ref                 String
+  title               String
+  imagefront          String
+  imageback           String
+  description         String
+  imagesignature      String? // Nullable field
+  nom_des_signataire  String
+  currencyId          Int
+  currency            Currency @relation(fields: [currencyId], references: [id])
+  value               String
+  issued_by           String
+  comments            String 
+  variations          Variation[]
+  date                String?  @default("")
+  type                String?  @default("")
+}
+
+model Variation {
+  id                  Int      @id @default(autoincrement())
+  ref                 String
+  imagefront          String
+  imageback           String
+  description         String
+  imagesignature      String? // Nullable field
+  nom_des_signataire  String
+  currenciesId        Int
+  currencies          Currencies @relation(fields: [currenciesId], references: [id])
+  issued_by           String
+  comments            String
+  date                String?  @default("")
+  type                String?  @default("")
+}

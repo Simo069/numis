@@ -31,9 +31,21 @@ export default function RegisterForm() {
       setError("All fields are necessary.");
       return;
     }
-
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/verify-email`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email }),
+    });
+    const result = await response.json();
+    
+    if (response.status === 400 && result.message === "Email is invalid") {
+      setError("enter a valid email please");
+      return;
+    } 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/register`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
