@@ -7,13 +7,15 @@ import Modal from "@/components/Modal";
 import axios from "axios";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import Image from "next/image";
 
 export default function currencies() {
   const [currencies, setCurrencies] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(null);
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
   const [message, setMessage] = useState("");
-  const [state, setstate] = useState("");
+  const [state, setState] = useState("");
   const filteredCurrencies = currencies.filter((currencie) =>
     `${currencie.ref}`.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -43,15 +45,80 @@ export default function currencies() {
       query: { isVariation: isVariation },
     });
   };
+
+  // const messagequery = router.query.message;
+  // const statequery = router.query.state;
+  // if (messagequery) {
+  //   setMessage(message);
+  // }
+  // if (statequery) {
+  //   setState(statequery);
+  // }
+  // useEffect(() => {
+  //   if (state !== "" || message !== "") {
+  //     const timer = setTimeout(() => {
+  //       setMessage("");
+  //       setState("");
+  //     }, 3000);
+
+  //     return () => clearTimeout(timer);
+
+  //   }
+  //   router.push("/dashboard/currencies")
+  // }, [state, message]);
+  useEffect(() => {
+    const { message: messageQuery, state: stateQuery } = router.query;
+
+    if (messageQuery) {
+      setMessage(messageQuery);
+    }
+    if (stateQuery) {
+      setState(stateQuery);
+    }
+  }, [router.query]);
+  useEffect(() => {
+    if (state !== "" || message !== "") {
+      const timer = setTimeout(() => {
+        setMessage("");
+        setState("");
+        router.push("/dashboard/currencies", undefined, { shallow: true });
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [state, message, router]);
   return (
     <>
       <DashboardLayout>
         <div className="card border-0 py-4 px-4 shadow-md rounded-lg h-[1000px] w-[700px] sm:w-[900px] md:w-[1400px]  lg:w-[1800px] overflow-scroll">
-          {" "}
-      
+          <div className="w-full mx-auto mt-4">
+            {state === "success" && (
+              <div
+                className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4 rounded-r"
+                role="alert"
+              >
+                <div className="flex items-center">
+                  <svg
+                    className="h-6 w-6 mr-2"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  <span className="font-medium">{message}</span>
+                </div>
+              </div>
+            )}
+          </div>{" "}
           <div className="mb-4 flex justify-between items-center overflow-scroll">
             <h1 className="text-2xl font-semibold text-gray-800">
-              All Categories
+              All Billets
             </h1>
             <div className="flex gap-3">
               <input
@@ -163,15 +230,16 @@ export default function currencies() {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-center">
                           {item.imagefront ? (
-                            <img
+                            <Image
                               src={item.imagefront}
                               alt="Front Image"
                               width={64}
                               height={64}
-                              className="object-cover"
+                              className="object-cover cursor-pointer"
+                              onClick={() => setSelectedImage(item.imagefront)}
                             />
                           ) : (
-                            <img
+                            <Image
                               src="/uploads/default.png"
                               alt="Default Image"
                               width={64}
@@ -182,12 +250,13 @@ export default function currencies() {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-center">
                           {item.imageback ? (
-                            <img
+                            <Image
                               src={item.imageback}
                               alt="Back Image"
                               width={64}
                               height={64}
-                              className="object-cover"
+                              className="object-cover cursor-pointer"
+                              onClick={() => setSelectedImage(item.imageback)}
                             />
                           ) : (
                             ""
@@ -195,12 +264,15 @@ export default function currencies() {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-center">
                           {item.imagesignature ? (
-                            <img
+                            <Image
                               src={item.imagesignature}
                               alt="Signature Image"
                               width={64}
                               height={64}
-                              className="object-cover"
+                              className="object-cover cursor-pointer"
+                              onClick={() =>
+                                setSelectedImage(item.imagesignature)
+                              }
                             />
                           ) : (
                             ""
@@ -227,7 +299,9 @@ export default function currencies() {
                           </button>
                           <button
                             className="bg-yellow-500 text-white px-3 py-1 rounded-lg ml-2"
-                            onClick={() => handleButtonClick(item.id , item.isVariation)}
+                            onClick={() =>
+                              handleButtonClick(item.id, item.isVariation)
+                            }
                           >
                             <GoMoveToEnd className="text-2xl" />
                           </button>
@@ -249,8 +323,24 @@ export default function currencies() {
                 No items found
               </h2>
               <p className="text-gray-500">
-                We couldn't find any users matching your search.
+                We were unsuccessful in finding any billets that match your
+                search.
               </p>
+            </div>
+          )}
+          {selectedImage && (
+            <div
+              className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center cursor-pointer"
+              onClick={() => setSelectedImage(null)}
+            >
+              <div className="relative w-3/4 h-3/4">
+                <Image
+                  src={selectedImage}
+                  alt="Image agrandie"
+                  layout="fill"
+                  objectFit="contain"
+                />
+              </div>
             </div>
           )}
         </div>

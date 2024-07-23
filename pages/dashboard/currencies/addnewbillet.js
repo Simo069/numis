@@ -102,6 +102,7 @@ export default function addnewbillet() {
     e.preventDefault();
 
     const formData = new FormData();
+    
     formData.append("ref", ref);
     formData.append("title", title);
     formData.append("description", description);
@@ -172,7 +173,7 @@ export default function addnewbillet() {
           issuedBy: "",
           comments: "",
           date: "",
-          type:"",
+          type: "",
           imageFront: null,
           imageBack: null,
           imageSignature: null,
@@ -396,13 +397,13 @@ export default function addnewbillet() {
                   id="description"
                   name="description"
                   rows="3"
+                  value={description}
                   placeholder="writea few line to descripe the product"
                   onChange={(e) => setDescription(e.target.value)}
                   class="block w-full rounded-md border  focus:border-indigo-500 focus:ring-indigo-500 focus:ring-opacity-50"
                 ></textarea>
               </div>
             </div>
-
             <div className="mb-4 flex flex-col md:flex-row md:justify-start gap-3 mt-4">
               <div className="md:w-1/3">
                 <label
@@ -526,291 +527,291 @@ export default function addnewbillet() {
               {variations.map((variation, index) => (
                 <div key={index} className="flex flex-col gap-y-3">
                   <div className="flex flex-col md:flex-row md:justify-start gap-5 gap-y-6">
-                       <div className="mb-4 md:w-1/2">
-                         <label
-                          htmlFor={variation.ref}
-                          className="block text-sm font-medium text-gray-700"
-                        >
-                          Ref
-                        </label>
-                        <input
-                          type="text"
-                          id={variation.ref}
-                          name={variation.ref}
-                          value={variation.ref}
-                          onChange={(e) =>
-                            handleVariationChange(index, "ref", e.target.value)
-                          }
-                          className="mt-1 p-2 w-full border rounded-md"
-                          required
-                        />
-                      </div>
-                      <div className="mb-4 md:w-1/2">
-                        <label
-                          htmlFor={variation.type}
-                          className="block text-sm font-medium text-gray-700"
-                        >
-                          Type
-                        </label>
-                        <input
-                          type="text"
-                          id={variation.type}
-                          name={variation.type}
-                          value={variation.type}
-                          onChange={(e) =>
-                            handleVariationChange(index, "type", e.target.value)
-                          }
-                          className="mt-1 p-2 w-full border rounded-md"
-                          required
-                        />
-                      </div>
-                    </div>
-                    <div className="flex flex-col md:flex-row md:justify-start gap-5 gap-y-6">
-                      <div className="mb-4 md:w-1/2">
-                        <label
-                          htmlFor={variation.nomDesSignataire}
-                          className="block text-sm font-medium text-gray-700"
-                        >
-                          Name of Signatures
-                        </label>
-                        <input
-                          type="text"
-                          id={variation.nomDesSignataire}
-                          name={variation.nomDesSignataire}
-                          value={variation.nomDesSignataire}
-                          onChange={(e) =>
-                            handleVariationChange(
-                              index,
-                              "nomDesSignataire",
-                              e.target.value
-                            )
-                          }
-                          className="mt-1 p-2 w-full border rounded-md"
-                          required
-                        />
-                      </div>
-                      <div className="mb-4 md:w-1/2">
-                        <label
-                          htmlFor={variation.date}
-                          className="block text-sm font-medium text-gray-700"
-                        >
-                          Date
-                        </label>
-                        <input
-                          type="text"
-                          id={variation.date}
-                          name={variation.date}
-                          value={variation.date}
-                          onChange={(e) =>
-                            handleVariationChange(index, "date", e.target.value)
-                          }
-                          className="mt-1 p-2 w-full border rounded-md"
-                          required
-                        />
-                      </div>
-                    </div>
-                    <div className="flex flex-col md:flex-row md:justify-start gap-5 gap-y-6">
-                      <div className="mb-4 md:w-1/2">
-                        <label
-                          htmlFor={variation.issuedBy}
-                          className="block text-sm font-medium text-gray-700"
-                        >
-                          Issued by
-                        </label>
-                        <input
-                          type="text"
-                          id={variation.issuedBy}
-                          name={variation.issuedBy}
-                          value={variation.issuedBy}
-                          onChange={(e) =>
-                            handleVariationChange(
-                              index,
-                              "issuedBy",
-                              e.target.value
-                            )
-                          }
-                          className="mt-1 p-2 w-full border rounded-md"
-                          required
-                        />
-                      </div>
-                      <div className="mb-4 md:w-1/2">
-                        <label
-                          htmlFor={variation.comments}
-                          className="block text-sm font-medium text-gray-700"
-                        >
-                          comment
-                        </label>
-                        <input
-                          type="text"
-                          id={variation.comments}
-                          name={variation.comments}
-                          value={variation.comments}
-                          onChange={(e) =>
-                            handleVariationChange(
-                              index,
-                              "comments",
-                              e.target.value
-                            )
-                          }
-                          className="mt-1 p-2 w-full border rounded-md"
-                          required
-                        />
-                      </div>
-                    </div>
-                    <div class="md:w-1/2">
+                    <div className="mb-4 md:w-1/2">
                       <label
-                        for={variation.description}
-                        class="block text-sm font-medium leading-6 text-gray-900"
+                        htmlFor={variation.ref}
+                        className="block text-sm font-medium text-gray-700"
                       >
-                        Description
+                        Ref
                       </label>
-                      <div class="mt-2">
-                        <textarea
-                          id={variation.description}
-                          name={variation.description}
-                          rows="3"
-                          placeholder="writea few line to descripe the product"
-                          onChange={(e) =>
-                            handleVariationChange(
-                              index,
-                              "description",
-                              e.target.value
-                            )
-                          }
-                          class="block w-full rounded-md border  focus:border-indigo-500 focus:ring-indigo-500 focus:ring-opacity-50"
-                        ></textarea>
+                      <input
+                        type="text"
+                        id={variation.ref}
+                        name={variation.ref}
+                        value={variation.ref}
+                        onChange={(e) =>
+                          handleVariationChange(index, "ref", e.target.value)
+                        }
+                        className="mt-1 p-2 w-full border rounded-md"
+                        required
+                      />
+                    </div>
+                    <div className="mb-4 md:w-1/2">
+                      <label
+                        htmlFor={variation.type}
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Type
+                      </label>
+                      <input
+                        type="text"
+                        id={variation.type}
+                        name={variation.type}
+                        value={variation.type}
+                        onChange={(e) =>
+                          handleVariationChange(index, "type", e.target.value)
+                        }
+                        className="mt-1 p-2 w-full border rounded-md"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-col md:flex-row md:justify-start gap-5 gap-y-6">
+                    <div className="mb-4 md:w-1/2">
+                      <label
+                        htmlFor={variation.nomDesSignataire}
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Name of Signatures
+                      </label>
+                      <input
+                        type="text"
+                        id={variation.nomDesSignataire}
+                        name={variation.nomDesSignataire}
+                        value={variation.nomDesSignataire}
+                        onChange={(e) =>
+                          handleVariationChange(
+                            index,
+                            "nomDesSignataire",
+                            e.target.value
+                          )
+                        }
+                        className="mt-1 p-2 w-full border rounded-md"
+                        required
+                      />
+                    </div>
+                    <div className="mb-4 md:w-1/2">
+                      <label
+                        htmlFor={variation.date}
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Date
+                      </label>
+                      <input
+                        type="text"
+                        id={variation.date}
+                        name={variation.date}
+                        value={variation.date}
+                        onChange={(e) =>
+                          handleVariationChange(index, "date", e.target.value)
+                        }
+                        className="mt-1 p-2 w-full border rounded-md"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-col md:flex-row md:justify-start gap-5 gap-y-6">
+                    <div className="mb-4 md:w-1/2">
+                      <label
+                        htmlFor={variation.issuedBy}
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Issued by
+                      </label>
+                      <input
+                        type="text"
+                        id={variation.issuedBy}
+                        name={variation.issuedBy}
+                        value={variation.issuedBy}
+                        onChange={(e) =>
+                          handleVariationChange(
+                            index,
+                            "issuedBy",
+                            e.target.value
+                          )
+                        }
+                        className="mt-1 p-2 w-full border rounded-md"
+                        required
+                      />
+                    </div>
+                    <div className="mb-4 md:w-1/2">
+                      <label
+                        htmlFor={variation.comments}
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        comment
+                      </label>
+                      <input
+                        type="text"
+                        id={variation.comments}
+                        name={variation.comments}
+                        value={variation.comments}
+                        onChange={(e) =>
+                          handleVariationChange(
+                            index,
+                            "comments",
+                            e.target.value
+                          )
+                        }
+                        className="mt-1 p-2 w-full border rounded-md"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="md:w-1/2">
+                    <label
+                      for={variation.description}
+                      class="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      Description
+                    </label>
+                    <div class="mt-2">
+                      <textarea
+                        id={variation.description}
+                        name={variation.description}
+                        rows="3"
+                        placeholder="writea few line to descripe the product"
+                        onChange={(e) =>
+                          handleVariationChange(
+                            index,
+                            "description",
+                            e.target.value
+                          )
+                        }
+                        class="block w-full rounded-md border  focus:border-indigo-500 focus:ring-indigo-500 focus:ring-opacity-50"
+                      ></textarea>
+                    </div>
+                  </div>
+                  <div className="mb-4 flex flex-col md:flex-row md:justify-start gap-3 mt-4">
+                    <div className="md:w-1/3">
+                      <label
+                        htmlFor={index}
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Image Front:
+                      </label>
+                      <div className="mt-2  flex justify-center rounded-lg border border-dashed border-gray-900/25 px-2 py-2">
+                        <div className="text-center">
+                          <div className="mt-4  flex text-sm leading-6 text-gray-600">
+                            <label
+                              htmlFor={index}
+                              className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
+                            >
+                              <span>Upload a file</span>
+                              <input
+                                id={index}
+                                name={index}
+                                type="file"
+                                className="sr-only"
+                                onChange={(e) =>
+                                  handleImageChange(
+                                    index,
+                                    "imageFront",
+                                    e.target.files[0]
+                                  )
+                                }
+                                required
+                              />
+                            </label>
+                            <p className="pl-1">or drag and drop</p>
+                          </div>
+                          {variation.imageFront && (
+                            <p className="mt-2 text-lg leading-5 text-gray-900 font-bold ">
+                              {variation.imageFront.name}
+                            </p>
+                          )}
+                          <p className="text-xs leading-5 text-gray-600">
+                            PNG, JPG, GIF up to 10MB
+                          </p>
+                        </div>
                       </div>
                     </div>
-                    <div className="mb-4 flex flex-col md:flex-row md:justify-start gap-3 mt-4">
-                      <div className="md:w-1/3">
-                        <label
-                          htmlFor={index}
-                          className="block text-sm font-medium leading-6 text-gray-900"
-                        >
-                          Image Front:
-                        </label>
-                        <div className="mt-2  flex justify-center rounded-lg border border-dashed border-gray-900/25 px-2 py-2">
-                          <div className="text-center">
-                            <div className="mt-4  flex text-sm leading-6 text-gray-600">
-                              <label
-                                htmlFor={index}
-                                className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
-                              >
-                                <span>Upload a file</span>
-                                <input
-                                  id={index}
-                                  name={index}
-                                  type="file"
-                                  className="sr-only"
-                                  onChange={(e) =>
-                                    handleImageChange(
-                                      index,
-                                      "imageFront",
-                                      e.target.files[0]
-                                    )
-                                  }
-                                  required
-                                />
-                              </label>
-                              <p className="pl-1">or drag and drop</p>
-                            </div>
-                            {variation.imageFront && (
-                              <p className="mt-2 text-lg leading-5 text-gray-900 font-bold ">
-                                {variation.imageFront.name}
-                              </p>
-                            )}
-                            <p className="text-xs leading-5 text-gray-600">
-                              PNG, JPG, GIF up to 10MB
-                            </p>
+                    <div className="md:w-1/3">
+                      <label
+                        htmlFor="cover-photo"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Image Back:
+                      </label>
+                      <div className="mt-2  flex justify-center rounded-lg border border-dashed border-gray-900/25 px-2 py-2">
+                        <div className="text-center">
+                          <div className="mt-4  flex text-sm leading-6 text-gray-600">
+                            <label
+                              htmlFor={variation.imageBack}
+                              className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
+                            >
+                              <span>Upload a file</span>
+                              <input
+                                id={variation.imageBack}
+                                name={variation.imageBack}
+                                type="file"
+                                className="sr-only"
+                                onChange={(e) =>
+                                  handleImageChange(
+                                    index,
+                                    "imageBack",
+                                    e.target.files[0]
+                                  )
+                                }
+                                required
+                              />
+                            </label>
+                            <p className="pl-1">or drag and drop</p>
                           </div>
-                        </div>
-                      </div>
-                      <div className="md:w-1/3">
-                        <label
-                          htmlFor="cover-photo"
-                          className="block text-sm font-medium leading-6 text-gray-900"
-                        >
-                          Image Back:
-                        </label>
-                        <div className="mt-2  flex justify-center rounded-lg border border-dashed border-gray-900/25 px-2 py-2">
-                          <div className="text-center">
-                            <div className="mt-4  flex text-sm leading-6 text-gray-600">
-                              <label
-                                htmlFor={variation.imageBack}
-                                className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
-                              >
-                                <span>Upload a file</span>
-                                <input
-                                  id={variation.imageBack}
-                                  name={variation.imageBack}
-                                  type="file"
-                                  className="sr-only"
-                                  onChange={(e) =>
-                                    handleImageChange(
-                                      index,
-                                      "imageBack",
-                                      e.target.files[0]
-                                    )
-                                  }
-                                  required
-                                />
-                              </label>
-                              <p className="pl-1">or drag and drop</p>
-                            </div>
-                            {variation.imageBack && (
-                              <p className="mt-2 text-lg leading-5 text-gray-900 font-bold ">
-                                {variation.imageBack.name}
-                              </p>
-                            )}
-                            <p className="text-xs leading-5 text-gray-600">
-                              PNG, JPG, GIF up to 10MB
+                          {variation.imageBack && (
+                            <p className="mt-2 text-lg leading-5 text-gray-900 font-bold ">
+                              {variation.imageBack.name}
                             </p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="md:w-1/3">
-                        <label
-                          htmlFor="cover-photo"
-                          className="block text-sm font-medium leading-6 text-gray-900"
-                        >
-                          Image Signature:
-                        </label>
-                        <div className="mt-2  flex justify-center rounded-lg border border-dashed border-gray-900/25 px-2 py-2">
-                          <div className="text-center">
-                            <div className="mt-4  flex text-sm leading-6 text-gray-600">
-                              <label
-                                htmlFor={variation.imageSignature}
-                                className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
-                              >
-                                <span>Upload a file</span>
-                                <input
-                                  id={variation.imageSignature}
-                                  name={variation.imageSignature}
-                                  type="file"
-                                  className="sr-only"
-                                  onChange={(e) =>
-                                    handleImageChange(
-                                      index,
-                                      "imageSignature",
-                                      e.target.files[0]
-                                    )
-                                  }
-                                />
-                              </label>
-                              <p className="pl-1">or drag and drop</p>
-                            </div>
-                            {variation.imageSignature && (
-                              <p className="mt-2 text-lg leading-5 text-gray-900 font-bold ">
-                                {variation.imageSignature.name}
-                              </p>
-                            )}
-                            <p className="text-xs leading-5 text-gray-600">
-                              PNG, JPG, GIF up to 10MB
-                            </p>
-                          </div>
+                          )}
+                          <p className="text-xs leading-5 text-gray-600">
+                            PNG, JPG, GIF up to 10MB
+                          </p>
                         </div>
                       </div>
                     </div>
+                    <div className="md:w-1/3">
+                      <label
+                        htmlFor="cover-photo"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Image Signature:
+                      </label>
+                      <div className="mt-2  flex justify-center rounded-lg border border-dashed border-gray-900/25 px-2 py-2">
+                        <div className="text-center">
+                          <div className="mt-4  flex text-sm leading-6 text-gray-600">
+                            <label
+                              htmlFor={variation.imageSignature}
+                              className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
+                            >
+                              <span>Upload a file</span>
+                              <input
+                                id={variation.imageSignature}
+                                name={variation.imageSignature}
+                                type="file"
+                                className="sr-only"
+                                onChange={(e) =>
+                                  handleImageChange(
+                                    index,
+                                    "imageSignature",
+                                    e.target.files[0]
+                                  )
+                                }
+                              />
+                            </label>
+                            <p className="pl-1">or drag and drop</p>
+                          </div>
+                          {variation.imageSignature && (
+                            <p className="mt-2 text-lg leading-5 text-gray-900 font-bold ">
+                              {variation.imageSignature.name}
+                            </p>
+                          )}
+                          <p className="text-xs leading-5 text-gray-600">
+                            PNG, JPG, GIF up to 10MB
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
                   <button
                     type="button"
