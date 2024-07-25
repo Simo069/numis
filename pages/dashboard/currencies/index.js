@@ -46,26 +46,6 @@ export default function currencies() {
     });
   };
 
-  // const messagequery = router.query.message;
-  // const statequery = router.query.state;
-  // if (messagequery) {
-  //   setMessage(message);
-  // }
-  // if (statequery) {
-  //   setState(statequery);
-  // }
-  // useEffect(() => {
-  //   if (state !== "" || message !== "") {
-  //     const timer = setTimeout(() => {
-  //       setMessage("");
-  //       setState("");
-  //     }, 3000);
-
-  //     return () => clearTimeout(timer);
-
-  //   }
-  //   router.push("/dashboard/currencies")
-  // }, [state, message]);
   useEffect(() => {
     const { message: messageQuery, state: stateQuery } = router.query;
 
@@ -219,16 +199,16 @@ export default function currencies() {
                   <tbody className="bg-white divide-y divide-gray-200">
                     {filteredCurrencies.map((item, index) => (
                       <tr key={index}>
-                        <td className="px-6 py-4 whitespace-nowrap text-center">
+                        <td className="px-6 py-4 whitespace-nowrap text-center min-w-[100px]  max-w-[200px] text-wrap">
                           {item.ref}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-center">
+                        <td className="px-6 py-4 whitespace-nowrap text-center min-w-[150px]  max-w-[200px] text-wrap">
                           {item.title}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-center">
+                        <td className="px-6 py-4 whitespace-nowrap text-center min-w-[200px]  max-w-[300px] text-wrap">
                           {item.description.substr(0, 45)}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-center">
+                        <td className="px-6 py-4 whitespace-nowrap text-center min-w-[100px]  max-w-[200px] text-wrap">
                           {item.imagefront ? (
                             <Image
                               src={item.imagefront}
@@ -248,7 +228,7 @@ export default function currencies() {
                             />
                           )}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-center">
+                        <td className="px-6 py-4 whitespace-nowrap text-center min-w-[100px]  max-w-[200px] text-wrap">
                           {item.imageback ? (
                             <Image
                               src={item.imageback}
@@ -262,7 +242,7 @@ export default function currencies() {
                             ""
                           )}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-center">
+                        <td className="px-6 py-4 whitespace-nowrap text-center min-w-[100px]  max-w-[200px] text-wrap">
                           {item.imagesignature ? (
                             <Image
                               src={item.imagesignature}
@@ -278,19 +258,19 @@ export default function currencies() {
                             ""
                           )}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-center">
+                        <td className="px-6 py-4 whitespace-nowrap text-center min-w-[100px]  max-w-[200px] text-wrap">
                           {item.date}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-center">
+                        <td className="px-6 py-4 whitespace-nowrap text-center min-w-[100px]  max-w-[200px] text-wrap">
                           {item.type}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-center">
+                        <td className="px-6 py-4 whitespace-nowrap text-center min-w-[200px]  max-w-[300px] text-wrap">
                           {item.comments}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-center">
+                        <td className="px-6 py-4 whitespace-nowrap text-center min-w-[200px]  max-w-[300px] text-wrap">
                           {item.nom_des_signataire}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-center">
+                        <td className="px-6 py-4 whitespace-nowrap text-center min-w-[200px]  max-w-[300px] text-wrap">
                           {item.issued_by}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-center">

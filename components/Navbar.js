@@ -1,5 +1,8 @@
+import React , {useEffect , useState} from "react";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import Link from "next/link";
+import {Dropdownabout } from "./Dropdownabout";
+
 // import { buttonVariants } from "./ui/button";
 import { ArrowRight } from "lucide-react";
 // import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
@@ -12,10 +15,12 @@ import { Dropdowncoin } from "./Dropdowncoin";
 export default function Navbar() {
   const { data: session } = useSession();
   const router = useRouter();
+  
   const handleSignOut = (e)=>{
     e.preventDefault()
     signOut()
   }
+
   return (
     <nav className="sticky z-[100] h-14 inset-x-0 top-0 w-full border-b border-gray-200 bg-white/75 transition-all">
       <MaxWidthWrapper>
@@ -33,8 +38,8 @@ export default function Navbar() {
                 {/* <FaCoins /> */}
                 <Dropdowncoin />
               </Link>
-              <Link href="#aboutus" className="transform hover:scale-110">
-                about us
+              <Link href="#aboutus" className="  transform hover:scale-110">
+                <Dropdownabout/>
               </Link>
             </div>
             {session ? (
@@ -42,12 +47,23 @@ export default function Navbar() {
                 <Link
                   href="/"
                   onClick={handleSignOut}
-                  className="rounded-full border border-black bg-black py-1.5 px-5 text-white transition-all hover:bg-white hover:text-black text-center text-sm font-inter flex items-center justify-center"
+                  // className="rounded-full border border-black bg-black py-1.5 px-5 text-white transition-all hover:bg-white hover:text-black text-center text-sm font-inter flex items-center justify-center"
+                  className="black_btn"
                 >
                   Sign out
                 </Link>
+                {session.user.role === "CLIENT" ? (
+                  <div>
+                    <Link 
+                    href="/profile" 
+                    className="rounded-full border border-green-600 bg-green-600 py-1.5 px-5 text-white transition-all hover:bg-white hover:text-green-700 text-center text-sm font-inter flex items-center justify-center"
+                    >Profile 
+                    </Link>
+                  </div>
+                  
+                ) : null}
                 {session.user.role === "ADMIN" ? (
-                  <Link href="/api/auth/logout">Dashboard </Link>
+                  <Link href="/dashbaord">Dashboard </Link>
                 ) : null}
               </>
             ) : (

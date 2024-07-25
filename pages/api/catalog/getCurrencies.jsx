@@ -28,16 +28,13 @@ import db from "@/lib/db";
 export default async function handler(req, res) {
   if (req.method === "POST") {
     const { id } = req.body;
-
     if (!id) {
       return res.status(400).json({ error: "Currency ID is required" });
     }
-
     try {
       const currencies = await db.currencies.findMany({
         where: { currencyId: parseInt(id) }, // Ensure the ID is an integer
       });
-
       if (currencies && currencies.length > 0) {
         res.status(200).json(currencies);
       }else if(currencies.length===0){

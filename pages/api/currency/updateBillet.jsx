@@ -13,7 +13,7 @@ export default function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  if (req.method === "PUT") {
+  
     const form = new IncomingForm({
       uploadDir: path.join(process.cwd(), "public", "uploads"),
       keepExtensions: true,
@@ -24,7 +24,7 @@ export default function handler(req, res) {
 
     form.parse(req, async (err, fields, files) => {
       if (err) {
-        console.log("Error parsing from");
+        console.log("Error parsing form updating billet");
         return res.status(500).json({ error: "Error parsing for data" });
       }
 
@@ -91,13 +91,13 @@ export default function handler(req, res) {
       };
       try {
         let updateData = {
-          ref:ref[0],
-          description:description[0],
-          nom_des_signataire:nom_des_signataire[0],
-          issued_by:issued_by[0],
-          comments:comments[0],
-          date:date[0],
-          type:type[0],
+          ref: ref[0],
+          description: description[0],
+          nom_des_signataire: nom_des_signataire[0],
+          issued_by: issued_by[0],
+          comments: comments[0],
+          date: date[0],
+          type: type[0],
         };
         if (files.imagefront) {
           updateData.imagefront = await saveImage(files.imagefront[0]);
@@ -108,21 +108,21 @@ export default function handler(req, res) {
         if (files.imagesignature) {
           updateData.imagesignature = await saveImage(files.imagesignature[0]);
         }
-        if (isvariation == 'false') {
+        if (isvariation == "false") {
           updateData.title = title[0];
           updateData.value = value[0];
-          updateData.currencyId = parseInt(currencyId[0]) ;
+          updateData.currencyId = parseInt(currencyId[0]);
           const updatedCurrency = await db.currencies.update({
-            where : {id : parseInt(id)},
-            data : updateData
+            where: { id: parseInt(id) },
+            data: updateData,
           });
-          res.status(200).json(updatedCurrency)
-        }else {
+          res.status(200).json(updatedCurrency);
+        } else {
           const updatedVariation = await db.variation.update({
-            where : {id:parseInt(id[0])},
-            data : updateData
+            where: { id: parseInt(id[0]) },
+            data: updateData,
           });
-          res.status(200).json(updatedVariation)
+          res.status(200).json(updatedVariation);
         }
       } catch (error) {
         console.error("Error updating billet:", error);
@@ -131,5 +131,5 @@ export default function handler(req, res) {
           .json({ error: "An error occurred while updating the billet" });
       }
     });
-  }
+  
 }

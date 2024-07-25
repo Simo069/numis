@@ -420,9 +420,15 @@ export default function updateBillet() {
                           width={96}
                           height={96}
                           src={imageFront}
+                          alt=""
                           className="rounded-lg object-cover"
                         />
                       )}
+                      {imageFront?.name && (
+                      <p className="mt-2 text-lg leading-5 text-gray-900 font-bold ">
+                        {imageFront.name}
+                      </p>
+                    )}
                       <p className="text-xs leading-5 text-gray-600">
                         PNG, JPG, GIF up to 10MB
                       </p>
@@ -461,9 +467,15 @@ export default function updateBillet() {
                         width={96}
                         height={96}
                         src={imageBack}
+                        alt=""
                         className="rounded-lg object-cover"
                       />
                       )}
+                      {imageBack?.name && (
+                      <p className="mt-2 text-lg leading-5 text-gray-900 font-bold ">
+                        {imageBack.name}
+                      </p>
+                    )}
                       <p className="text-xs leading-5 text-gray-600">
                         PNG, JPG, GIF up to 10MB
                       </p>
@@ -489,6 +501,7 @@ export default function updateBillet() {
                             id="Image_Signature"
                             name="Image_Signature"
                             type="file"
+                            
                             className="sr-only"
                             onChange={(e) =>
                               handleImageSignatureChange(e.target.files[0])
@@ -503,8 +516,14 @@ export default function updateBillet() {
                         height={96}
                         src={imageSignature}
                         className="rounded-lg object-cover"
+                        alt=""
                       />
                       )}
+                      {imageSignature?.name && (
+                      <p className="mt-2 text-lg leading-5 text-gray-900 font-bold ">
+                        {imageSignature.name}
+                      </p>
+                    )}
                       <p className="text-xs leading-5 text-gray-600">
                         PNG, JPG, GIF up to 10MB
                       </p>
