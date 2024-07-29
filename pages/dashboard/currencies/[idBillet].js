@@ -24,6 +24,7 @@ export default function updateBillet() {
   const [currencyItem, setCurrencyItem] = useState([]);
   const [currency, setCurrency] = useState([]);
   const [variations, setVariations] = useState([]);
+
   const fetchCurrencyItem = async () => {
     try {
       const response = await axios.get(

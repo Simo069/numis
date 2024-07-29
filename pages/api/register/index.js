@@ -1,6 +1,5 @@
 import { PrismaClient } from '@prisma/client';
 import { hash } from "bcrypt";
-
 import db from "@/lib/db";
 import * as z from "zod";
 

@@ -29,6 +29,7 @@
     
 //   )
 // }
+
 import "@/styles/globals.css";
 import { SessionProvider, useSession } from "next-auth/react";
 import Navbar from "@/components/Navbar";
@@ -47,7 +48,7 @@ export default function App({
 
 function MainContent({ Component, pageProps }) {
   const { data: session } = useSession();
- 
+
   console.log("Session data role:", session?.role);
   return (
     <>

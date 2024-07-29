@@ -8,6 +8,7 @@ import axios from "axios";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import Image from "next/image";
+import { set } from "zod";
 
 export default function Category() {
   const [categories, setCategories] = useState([]);
@@ -25,7 +26,7 @@ export default function Category() {
   const [title, setTitle] = useState("");
   const [bankName, setBankName] = useState("");
   const [currency, setCurrency] = useState("");
-  const [image, setImage] = useState([]);
+  const [image, setImage] = useState(null);
   const [dateIssue, setDateIssue] = useState("");
   const formRef = useRef(null);
   const handleSubmit = async (e) => {
@@ -123,6 +124,10 @@ export default function Category() {
     // Cleanup function to clear the timeout if the component unmounts or dependencies change
     return () => clearTimeout(timer);
   }, [queryMessage, queryState, message, state]);
+
+  const handleImageBackChange=(file)=>{
+    setImage(file)
+  }
   return (
     <DashboardLayout>
       <div className="card border-0 py-4 px-4 shadow-md rounded-lg h-[1000px] w-[700px] sm:w-[900px] md:w-[1400px]  lg:w-[1800px] overflow-scroll">

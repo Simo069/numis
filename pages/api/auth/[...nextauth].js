@@ -92,7 +92,7 @@ export const authOptions = {
                         return null;
                     }
 
-                    return { id: user.id, email: user.email, username: user.username, role: user.role };
+                    return { id: user.id, email: user.email, username: user.username, role: user.role , firstname: user.firstname , secondname: user.secondname , profile: user.profile, };
                 } catch (error) {
                     console.log("Error: ", error);
                     return null;
@@ -110,6 +110,7 @@ export const authOptions = {
     secret: process.env.NEXTAUTH_SECRET,
     pages: {
         signIn: "/",
+        signOut:"/",
     },
     callbacks: {
         async jwt({ token, user }) {
@@ -120,6 +121,7 @@ export const authOptions = {
                 token.firstname = user.firstname;
                 token.secondname = user.secondname;
                 token.role = user.role;
+                token.profile = user.profile;
             }
             return token;
         },
@@ -130,6 +132,7 @@ export const authOptions = {
             session.user.firstname = token.firstname;
             session.user.secondname = token.secondname;
             session.user.role = token.role;
+            session.user.profile = token.profile;
             return session;
         },
     },

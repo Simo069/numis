@@ -44,7 +44,7 @@ model User {
   password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  profile   String   @default("")
+  profile   String   @default("/uploads/unknown.png")
   role      Role     @default(CLIENT)
 }
 
