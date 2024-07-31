@@ -8,6 +8,7 @@ import axios from "axios";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import Image from "next/image";
+import ConfirmationModal from "@/components/ConfirmationModal";
 
 export default function currencies() {
   const [currencies, setCurrencies] = useState([]);
@@ -16,6 +17,9 @@ export default function currencies() {
   const [searchTerm, setSearchTerm] = useState("");
   const [message, setMessage] = useState("");
   const [state, setState] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState("");
+
   const filteredCurrencies = currencies.filter((currencie) =>
     `${currencie.ref}`.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -48,7 +52,6 @@ export default function currencies() {
 
   useEffect(() => {
     const { message: messageQuery, state: stateQuery } = router.query;
-
     if (messageQuery) {
       setMessage(messageQuery);
     }
@@ -67,6 +70,57 @@ export default function currencies() {
       return () => clearTimeout(timer);
     }
   }, [state, message, router]);
+
+  const handleDeleteClick = (item) => {
+    setItemToDelete(item);
+    setIsModalOpen(true);
+  };
+  
+  const handleConfirmDelete = async () => {
+    console.log("item to delete ::", itemToDelete);
+    try {
+      const resDelete = await axios.delete(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/currency/deleteBillet`, 
+        {
+          data: { idBillet: itemToDelete }
+        }
+      );
+      if (resDelete.status === 200) {
+        setState("success");
+        setMessage("Billet deleted successfully from table currencies...");
+        fetchAllBillet();
+        setIsModalOpen(false);
+    setItemToDelete(null);
+      } else {
+        setState("danger");
+        setMessage(
+          "Error when Deleting billet from table currencies. Try again later, please ..."
+        );
+        setIsModalOpen(false);
+    setItemToDelete(null);
+      }
+    } catch (error) {
+      console.error("Error when deleting a billet from currencies in dashboard admin", error);
+      setState("danger");
+      setMessage(
+        "Error when Deleting billet from table currencies. Try again later, please ..."
+      );
+    }
+    setIsModalOpen(false);
+    setItemToDelete(null);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setItemToDelete(null);
+  };
+
+  if (message || state) {
+    setTimeout(() => {
+      setState("");
+      setMessage("");
+    }, 5000);
+  }
   return (
     <>
       <DashboardLayout>
@@ -92,6 +146,18 @@ export default function currencies() {
                     />
                   </svg>
                   <span className="font-medium">{message}</span>
+                </div>
+              </div>
+            )}
+            {state === "danger" && (
+              <div className="alert alert-danger p-4 mb-4 border border-red-400 bg-red-100 rounded-md text-red-800 flex items-start space-x-2">
+                <ExclamationTriangleIcon className="h-4 w-4 mt-1" />
+                <div>
+                  <div className="font-bold">Error</div>
+                  <div>
+                    Updating a category was unsuccessful. Please try again later
+                    .
+                  </div>
                 </div>
               </div>
             )}
@@ -274,7 +340,10 @@ export default function currencies() {
                           {item.issued_by}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-center">
-                          <button className="bg-red-500 text-white px-3 py-1 rounded-lg">
+                          <button
+                            className="bg-red-500 text-white px-3 py-1 rounded-lg"
+                            onClick={() => handleDeleteClick(item.id)}
+                          >
                             <MdDelete className="text-2xl" />
                           </button>
                           <button
@@ -324,6 +393,12 @@ export default function currencies() {
             </div>
           )}
         </div>
+        <ConfirmationModal
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          onConfirm={handleConfirmDelete}
+          message={`Are you sure you want to delete this billet from. the currecnies table?`}
+        />
       </DashboardLayout>
     </>
   );

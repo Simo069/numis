@@ -8,8 +8,20 @@ import { Star, Check } from "lucide-react";
 import Link from "next/link";
 import Sections from "@/components/Sections";
 import AnimatedSection from "@/components/Animatedsection";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  useEffect(() => {
+    if (status === "loading") return;
+    if (session && session.user.role === "ADMIN") {
+      router.replace("/dashboard");
+    }
+  }, [session, status, router]);
+
   return (
     <div className="bg-slate-50">
       {/* <Navbar/> */}
@@ -55,11 +67,11 @@ export default function Home() {
       <section>
         <MaxWidthWrapper>
           <AnimatedSection
-          title="Government Representative at Bank Al-Maghrib"
-          description="The Government Representative at Bank Al-Maghrib plays a pivotal role as a liaison between the Moroccan government and the central bank. Their functions include representing the government's interests and policies within Bank Al-Maghrib, participating in decision-making processes related to monetary policy and financial stability, ensuring coordination and collaboration between the central bank and government ministries, providing insights and advice to the government on monetary and financial matters, and monitoring the implementation of government directives within the central bank."
-          imageUrl="/mandoub.png"
-          imageAlt="Government_Representative"
-          link="/about/government_representative"
+            title="Government Representative at Bank Al-Maghrib"
+            description="The Government Representative at Bank Al-Maghrib plays a pivotal role as a liaison between the Moroccan government and the central bank. Their functions include representing the government's interests and policies within Bank Al-Maghrib, participating in decision-making processes related to monetary policy and financial stability, ensuring coordination and collaboration between the central bank and government ministries, providing insights and advice to the government on monetary and financial matters, and monitoring the implementation of government directives within the central bank."
+            imageUrl="/mandoub.png"
+            imageAlt="Government_Representative"
+            link="/about/government_representative"
           />
         </MaxWidthWrapper>
       </section>
@@ -75,11 +87,11 @@ export default function Home() {
       <section>
         <MaxWidthWrapper>
           <AnimatedSection
-          title="Dar As-Sikkah: The Issuer of Moroccan Banknotes"
-          description="Dar As-Sikkah, also known as the Hôtel des monnaies, is the organization responsible for producing the Moroccan currency, the Moroccan dirham (MAD). It was created in March 1987 by King Hassan II to meet the needs of Morocco in fiduciary currency. Dar As-Sikkah is a department of Bank Al-Maghrib (BAM), the central bank of Morocco \n,Dar As-Sikkah, the minting authority of Morocco, is responsible for producing the country's banknotes and coins. It ensures the security and integrity of the currency, playing a vital role in the Moroccan economy."
-          imageUrl="/daralsika.png"
-          imageAlt="Dar As-Sikkah"
-          link="about/dar_al_sikkah"
+            title="Dar As-Sikkah: The Issuer of Moroccan Banknotes"
+            description="Dar As-Sikkah, also known as the Hôtel des monnaies, is the organization responsible for producing the Moroccan currency, the Moroccan dirham (MAD). It was created in March 1987 by King Hassan II to meet the needs of Morocco in fiduciary currency. Dar As-Sikkah is a department of Bank Al-Maghrib (BAM), the central bank of Morocco \n,Dar As-Sikkah, the minting authority of Morocco, is responsible for producing the country's banknotes and coins. It ensures the security and integrity of the currency, playing a vital role in the Moroccan economy."
+            imageUrl="/daralsika.png"
+            imageAlt="Dar As-Sikkah"
+            link="about/dar_al_sikkah"
           />
         </MaxWidthWrapper>
       </section>

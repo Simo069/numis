@@ -31,33 +31,39 @@ export default function RegisterForm() {
       setError("All fields are necessary.");
       return;
     }
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/verify-email`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email }),
-    });
-    const result = await response.json();
-    
-    if (response.status === 400 && result.message === "Email is invalid") {
-      setError("enter a valid email please");
-      return;
-    } 
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/register`, {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/verify-email`,
+      {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          username: name,
-          email: email,
-          password: password,
-          firstname: firstname,
-          secondname: secondname,
-        }),
-      });
+        body: JSON.stringify({ email }),
+      }
+    );
+    const result = await response.json();
+
+    if (response.status === 400 && result.message === "Email is invalid") {
+      setError("enter a valid email please");
+      return;
+    }
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: name,
+            email: email,
+            password: password,
+            firstname: firstname,
+            secondname: secondname,
+          }),
+        }
+      );
 
       const response = await res.json();
       console.log("status :", res.status);
@@ -78,14 +84,14 @@ export default function RegisterForm() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 bg-cover bg-center flex items-center justify-center p-4 ">
-      <div className="absolute inset-1 backdrop-filter backdrop-blur-sm bg-black bg-opacity-10"></div>
-      <div className="max-w-md w-full space-y-8 z-10">
+    <div className="min-h-screen relative bg-[url('/login.png')] bg-cover bg-center flex items-center justify-center  overflow-x-hidden">
+      <div className="absolute inset-1 backdrop-filter backdrop-blur-sm bg-black bg-opacity-70 w-full m-0 p-0 left-0"></div>
+      <div className="max-w-md w-full space-y-8 z-10 ">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-black">
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
             Register
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-700">
+          <p className="mt-2 text-center text-sm text-gray-100">
             Create a new account
           </p>
         </div>
@@ -208,13 +214,13 @@ export default function RegisterForm() {
             </button>
           </div>
         </form>
-        <p className="mt-10 text-center text-sm text-gray-900">
+        <p className="mt-10 text-center text-sm text-white">
           Already have an account?{" "}
           <Link
             className="text-sm mt-3 text-right no-underline"
             href={"/login"}
           >
-            <span className="underline text-blue-900">Login</span>
+            <span className="underline text-green-600">Login</span>
           </Link>
         </p>
       </div>

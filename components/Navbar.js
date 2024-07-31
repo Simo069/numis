@@ -16,9 +16,11 @@ export default function Navbar() {
   const { data: session } = useSession();
   const router = useRouter();
   
-  const handleSignOut = (e)=>{
+  const handleSignOut = async (e)=>{
     e.preventDefault()
-    signOut()
+    await signOut({ redirect: false }); 
+    router.push("/"); 
+    
   }
 
   return (
@@ -45,7 +47,7 @@ export default function Navbar() {
             {session ? (
               <>
                 <Link
-                  href="/"
+                  href=""
                   onClick={handleSignOut}
                   // className="rounded-full border border-black bg-black py-1.5 px-5 text-white transition-all hover:bg-white hover:text-black text-center text-sm font-inter flex items-center justify-center"
                   className="black_btn"

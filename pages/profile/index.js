@@ -3,13 +3,28 @@ import React, { useState, useEffect } from "react";
 import { CTabs, CTab, CTabContent, CTabList, CTabPanel } from "@coreui/react";
 import UserInfo from "@/components/UserInfo";
 import Image from "next/image";
+import Collection from "@/components/Collection";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
+
 
 export default function profile() {
   const [messagequery, setMessagequery] = useState(null);
   const [activeTab, setActiveTab] = useState("personalInfo");
+  const { data: session, status } = useSession();
+  const router = useRouter()
+
+  useEffect(() => {
+    if (status === "loading") return;
+    if (!session ) {
+      router.replace("/");
+    }
+  }, [session, status, router]);
+
   return (
     <MaxWidthWrapper className="">
-      <div className="flex flex-col min-h-screen">
+      <div className="flex  flex-col min-h-screen">
         <div className="second mt-32 flex-grow">
           <div className="container mx-auto ">
             <div>
@@ -19,7 +34,7 @@ export default function profile() {
                 </div>
               )}
             </div>
-            <div className="flex flex-wrap justify-center mb-8">
+            <div className="flex flex-wrap justify-start items-center mb-8">
               <button
                 className={`mx-2 width-[100px] my-1 py-2 px-4 rounded-lg focus:outline-none transition-colors duration-300 ${
                   activeTab === "personalInfo"
@@ -28,7 +43,7 @@ export default function profile() {
                 }`}
                 onClick={() => setActiveTab("personalInfo")}
               >
-                med
+                Personl Information
               </button>
               <button
                 className={`mx-2 width-[100px] my-1 py-2 px-4 rounded-lg focus:outline-none transition-colors duration-300 ${
@@ -38,7 +53,7 @@ export default function profile() {
                 }`}
                 onClick={() => setActiveTab("publishedProducts")}
               >
-                test 1
+                Collection
               </button>
               <button
                 className={`mx-2 width-[100px] my-1 py-2 px-4 rounded-lg focus:outline-none transition-colors duration-300 ${
@@ -65,9 +80,10 @@ export default function profile() {
               {activeTab === "personalInfo" &&
                 <UserInfo/>
               }
+
               {activeTab === "publishedProducts" &&
-                // <PublishedProducts user={user} />
-                "test1"}
+                <Collection/>
+              } 
               {activeTab === "likedProducts" &&
                 // <LikedProducts user={user} />
                 "test 2"}

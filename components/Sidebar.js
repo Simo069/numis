@@ -70,7 +70,7 @@ const Sidebar = forwardRef(({ isSidebarOpen, toggleSidebar }, ref) => {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                    d="M3 7h6l7 7H3zm9 7v4h4"
                   />
                 </svg>
                 Categories
@@ -91,23 +91,42 @@ const Sidebar = forwardRef(({ isSidebarOpen, toggleSidebar }, ref) => {
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  <path
+                  <rect
+                    x="2"
+                    y="6"
+                    width="20"
+                    height="12"
+                    rx="2"
+                    ry="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                  />
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                  />
+                  <path
+                    d="M6 12h.01M18 12h.01"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
                   />
                 </svg>
                 currencies
               </div>
             </Link>
           </li>
-          {/* <li
+          <li
             className={`px-6 py-3 hover:scale-105 ${getLinkClass(
-              "/admin/deals"
+              "/dashboard/collections"
             )}`}
           >
-            <Link className="no-underline" href="/admin/deals">
+            <Link className="no-underline" href="/dashboard/collections">
               <div className="flex items-center">
                 <svg
                   className="w-5 h-5 mr-2"
@@ -116,18 +135,59 @@ const Sidebar = forwardRef(({ isSidebarOpen, toggleSidebar }, ref) => {
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  <path
+                  <rect
+                    x="3"
+                    y="5"
+                    width="18"
+                    height="12"
+                    rx="2"
+                    ry="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+                  />
+                  <rect
+                    x="1"
+                    y="7"
+                    width="18"
+                    height="12"
+                    rx="2"
+                    ry="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                  />
+                  <rect
+                    x="5"
+                    y="3"
+                    width="18"
+                    height="12"
+                    rx="2"
+                    ry="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                  />
+                  <circle
+                    cx="12"
+                    cy="11"
+                    r="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                  />
+                  <path
+                    d="M6 11h.01M18 11h.01"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
                   />
                 </svg>
-                Deals
+                Collections
               </div>
             </Link>
           </li>
-          <li
+          {/* <li
             className={`px-6 py-3 hover:scale-105 ${getLinkClass(
               "/admin/deliver"
             )}`}

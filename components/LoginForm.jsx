@@ -12,6 +12,7 @@ import {
   FaExclamationCircle,
   FaCheckCircle,
 } from "react-icons/fa";
+
 import { FaUser } from "react-icons/fa";
 
 export default function LoginForm() {
@@ -73,8 +74,8 @@ export default function LoginForm() {
   };
   return (
     // <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white flex items-center justify-center p-4">
-    <div className="min-h-screen bg-white bg-cover bg-center flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-gradient-to-b from-gray-85 to-black opacity-10"></div>
+    <div className="min-h-screen relative bg-[url('/login.png')] bg-cover bg-center flex items-center justify-center  ">
+      <div className="absolute inset-1 backdrop-filter backdrop-blur-sm bg-black bg-opacity-70 w-full m-0 p-0 left-0"></div>
       <div className="max-w-md w-full space-y-8 z-10">
         {/* <div className="max-w-md w-full space-y-8"> */}
         {success && (
@@ -84,10 +85,10 @@ export default function LoginForm() {
           </div>
         )}
         <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-black">
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
             Welcome back
           </h2>
-          <p className="mt-2 text-center text-sm text-black">
+          <p className="mt-2 text-center text-sm text-white">
             Log in to access your account
           </p>
         </div>
@@ -175,7 +176,7 @@ export default function LoginForm() {
           <div className="text-sm">
             <Link
               href="#"
-              className="font-medium text-blue-600 hover:text-blue-500"
+              className="font-medium text-green-600 hover:text-green-500"
             >
               Forgot your password?
             </Link>
@@ -191,11 +192,11 @@ export default function LoginForm() {
             </div>
           </div>
         </form>
-        <p className="mt-10 text-center text-sm text-gray-900">
+        <p className="mt-10 text-center text-sm text-white">
           Don't have an account?{" "}
           <Link
             href="/register"
-            className="font-medium text-blue-600 hover:text-blue-500"
+            className="font-medium text-green-400 hover:text-green-600"
           >
             Sign up now
           </Link>

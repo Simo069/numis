@@ -9,6 +9,7 @@ import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import Image from "next/image";
 import { set } from "zod";
+import ConfirmationModal from "@/components/ConfirmationModal";
 
 export default function Category() {
   const [categories, setCategories] = useState([]);
@@ -29,6 +30,56 @@ export default function Category() {
   const [image, setImage] = useState(null);
   const [dateIssue, setDateIssue] = useState("");
   const formRef = useRef(null);
+
+  // delete category
+  const [itemToDelete, setItemToDelete] = useState("");
+  const [isModalConfirmationOpen, setIsModalConfirmationOpen] = useState(false);
+  const handleDeleteClick = (item) => {
+    setItemToDelete(item);
+    setIsModalConfirmationOpen(true);
+  };
+  const handleConfirmDelete = async () => {
+    console.log("item to delete ::", itemToDelete);
+    try {
+      const resDelete = await axios.delete(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/catalog/deleteCategory`,
+        {
+          data: { idCategory: itemToDelete },
+        }
+      );
+      if (resDelete.status === 200) {
+        setState("success");
+        setMessage("Category deleted successfully  ...");
+        
+        setIsModalOpen(false);
+        setItemToDelete(null);
+      } else {
+        setState("danger");
+        setMessage(
+          "Error when Deleting Category. Try again later, please ..."
+        );
+        setIsModalOpen(false);
+        setItemToDelete(null);
+      }
+    } catch (error) {
+      console.error(
+        "Error when deleting a Category  in dashboard admin",
+        error
+      );
+      setState("danger");
+      setMessage(
+        "Error when Deleting Category. Try again later, please ..."
+      );
+    }
+    setIsModalConfirmationOpen(false);
+    setItemToDelete(null);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalConfirmationOpen(false);
+    setItemToDelete(null);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("title", title);
@@ -125,9 +176,9 @@ export default function Category() {
     return () => clearTimeout(timer);
   }, [queryMessage, queryState, message, state]);
 
-  const handleImageBackChange=(file)=>{
-    setImage(file)
-  }
+  const handleImageBackChange = (file) => {
+    setImage(file);
+  };
   return (
     <DashboardLayout>
       <div className="card border-0 py-4 px-4 shadow-md rounded-lg h-[1000px] w-[700px] sm:w-[900px] md:w-[1400px]  lg:w-[1800px] overflow-scroll">
@@ -395,7 +446,9 @@ export default function Category() {
                       {item.date_issue}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <button className="bg-red-500 text-white px-3 py-1 rounded-lg">
+                      <button className="bg-red-500 text-white px-3 py-1 rounded-lg"
+                      onClick={()=>handleDeleteClick(item.id)}
+                      >
                         <MdDelete className="text-2xl" />
                       </button>
                       <button
@@ -441,6 +494,12 @@ export default function Category() {
           </div>
         )}
       </div>
+      <ConfirmationModal
+        isOpen={isModalConfirmationOpen}
+        onClose={handleCloseModal}
+        onConfirm={handleConfirmDelete}
+        message={`Are you sure you want to delete this Category?`}
+      />
     </DashboardLayout>
   );
 }
