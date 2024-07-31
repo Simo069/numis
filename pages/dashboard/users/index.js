@@ -6,49 +6,43 @@ import { MdDelete } from "react-icons/md";
 import { GoMoveToEnd } from "react-icons/go";
 import { useRouter } from "next/router";
 
-export default function collections() {
+
+export default function users() {
   const [collections, setCollections] = useState([]);
+  const [users, setUsers] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
   const [message, setMessage] = useState("");
   const [state, setState] = useState("");
-  const filteredCollections = collections.filter((collection) =>
-    `${collection.username}`.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredUsers = users.filter((user) =>
+    `${user.username}`.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
   useEffect(() => {
     // Fetch data from your backend API
-    fetchCollections();
+    fetchUsers();
   }, []);
-  const fetchCollections = async () => {
+  const fetchUsers = async () => {
     try {
-      const resCollection = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/collection/getCollectionsByUser`
+      const resUsers = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/user/getUsers`
       );
-      setCollections(resCollection.data);
-      console.log("resCollection::", resCollection.data);
+      setUsers(resUsers.data);
+      console.log("resUsers::", resUsers.data);
     } catch (error) {
       console.error(
-        "error when fetching collection in dashboard admin ::",
+        "error when fetching Users in dashboard admin ::",
         error
       );
     }
   };
-
-  const handleButtonClick = (idUser) => {
-    router.push({
-      pathname: `/dashboard/collections/${idUser}`,
-    });
-  };
-
   return (
     <DashboardLayout>
       <div className="card border-0 py-4 px-4 shadow-md rounded-lg h-[1000px] w-[700px] sm:w-[900px] md:w-[1400px]  lg:w-[1800px] overflow-scroll">
         <div className="w-full mx-auto mt-4"></div>{" "}
         <div className="mb-4 flex justify-between items-center overflow-scroll">
           <h1 className="text-2xl font-semibold text-gray-800">
-            All Collections
+            All Users
           </h1>
           <div className="flex gap-3">
             <input
@@ -66,7 +60,7 @@ export default function collections() {
               </button> */}
           </div>
         </div>
-        {filteredCollections.length > 0 ? (
+        {filteredUsers.length > 0 ? (
           <div className="overflow-scroll max-h-[900px]  sm:max-w-[900px] md:max-w-[1000px]  lg:max-w-[1800px]">
             <div className="overflow-x-auto h-full">
               <table className="min-w-full divide-y divide-gray-200">
@@ -88,7 +82,19 @@ export default function collections() {
                       scope="col"
                       className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
-                      Number Billets
+                      full name
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Email
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Created At
                     </th>
                     <th
                       scope="col"
@@ -99,18 +105,18 @@ export default function collections() {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {filteredCollections.map((item, index) => (
+                  {filteredUsers.map((item, index) => (
                     <tr key={index}>
                       <td className="px-6 py-4 whitespace-nowrap text-center align-middle">
                         <div className="flex justify-center items-center h-full">
-                          {item.image ? (
+                          {item.profile ? (
                             <Image
-                              src={item.imagefront}
+                              src={item.profile}
                               alt="Front Image"
                               width={64}
                               height={64}
                               className="object-cover cursor-pointer rounded-full w-16 h-16"
-                              onClick={() => setSelectedImage(item.imagefront)}
+                              onClick={() => setSelectedImage(item.profile)}
                             />
                           ) : (
                             <Image
@@ -130,7 +136,17 @@ export default function collections() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-center align-middle">
                         <div className="flex justify-center items-center h-full">
-                          {item._count.collections}
+                          {item.firstname} {item.secondname}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-center align-middle">
+                        <div className="flex justify-center items-center h-full">
+                          {item.email}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-center align-middle">
+                        <div className="flex justify-center items-center h-full">
+                          {item.createdAt}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-center align-middle">

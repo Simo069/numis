@@ -8,7 +8,7 @@ export default async function handler(req, res) {
           id: 'asc',
         },
       });
-      console.log("currencies::::", currencies);
+      // console.log("currencies::::", currencies);
       res.status(200).json(currencies);
     } catch (error) {
       res.status(500).json({ error: "Error fetching currencies" });

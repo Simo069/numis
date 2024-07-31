@@ -59,7 +59,7 @@ export default function BilletMonnaie() {
         );
       }
     } catch (error) {
-      console.error("Error when deleting a billet ",error);
+      console.error("Error when deleting a billet ", error);
     }
     // After deletion, close the modal and reset the itemToDelete
     setIsModalOpen(false);
@@ -70,8 +70,6 @@ export default function BilletMonnaie() {
     setItemToDelete(null);
   };
 
-
-  
   useEffect(() => {
     if (status === "authenticated" && session?.user?.id) {
       setUserId(session.user.id);
@@ -165,8 +163,8 @@ export default function BilletMonnaie() {
   }
 
   const AddToCollection = async (userId, billetId, isVariation, idCategory) => {
-    if(!session){
-      router.replace("/login")
+    if (!session) {
+      router.replace("/login");
       return;
     }
     console.log("userId---::", userId);
@@ -269,14 +267,18 @@ export default function BilletMonnaie() {
                   </>
                 ) : (
                   <>
-                    <button
-                      className="button font-semibold  border px-3 py-2 text-white bg-green-500 rounded transform transition-all hover:scale-110 "
-                      onClick={() =>
-                        AddToCollection(userId, currency.id, false, id)
-                      }
-                    >
-                      Add To Collection
-                    </button>
+                    {session?.user?.role !== "ADMIN" ? (
+                      <button
+                        className="button font-semibold  border px-3 py-2 text-white bg-green-500 rounded transform transition-all hover:scale-110 "
+                        onClick={() =>
+                          AddToCollection(userId, currency.id, false, id)
+                        }
+                      >
+                        Add To Collection
+                      </button>
+                    ) : (
+                      <>{""}</>
+                    )}
                   </>
                 )}
               </div>
@@ -365,14 +367,23 @@ export default function BilletMonnaie() {
                           </>
                         ) : (
                           <>
-                            <button
-                              className="button font-semibold  border px-3 py-2 text-white bg-green-500 rounded transform transition-all hover:scale-110 "
-                              onClick={() =>
-                                AddToCollection(userId, variation.id, true, id)
-                              }
-                            >
-                              Add To Collection
-                            </button>
+                            {session?.user?.role !== "ADMIN" ? (
+                              <button
+                                className="button font-semibold  border px-3 py-2 text-white bg-green-500 rounded transform transition-all hover:scale-110 "
+                                onClick={() =>
+                                  AddToCollection(
+                                    userId,
+                                    variation.id,
+                                    true,
+                                    id
+                                  )
+                                }
+                              >
+                                Add To Collection
+                              </button>
+                            ) : (
+                              <>{""}</>
+                            )}
                           </>
                         )}
                       </div>

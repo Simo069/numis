@@ -12,31 +12,6 @@ const Header = ({ toggleSidebar }) => {
   const email = session?.user?.email;
   const [user, setUser] = useState([]);
   const router = useRouter();
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       if (email) {
-  //         const resUserExists = await fetch(
-  //           `${process.env.NEXT_PUBLIC_URL}/api/userExist`,
-  //           {
-  //             method: "POST",
-  //             headers: {
-  //               "Content-Type": "application/json",
-  //             },
-  //             body: JSON.stringify({ email: email }),
-  //           }
-  //         );
-  //         const responseUserExists = await resUserExists.json();
-  //         console.log("asf : ", responseUserExists.user);
-  //         setUser(responseUserExists.user);
-  //       }
-  //     } catch (error) {
-  //       console.log("Error during registration: ", error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, [email]);
   const handleSignOut = async () => {
     await signOut({ redirect: false }); // Sign out without redirecting
     setIsOpen(false);

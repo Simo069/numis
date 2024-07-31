@@ -18,7 +18,7 @@ export default function currencies() {
   const [message, setMessage] = useState("");
   const [state, setState] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState("");
+  const [itemToDelete, setItemToDelete] = useState(null);
 
   const filteredCurrencies = currencies.filter((currencie) =>
     `${currencie.ref}`.toLowerCase().includes(searchTerm.toLowerCase())
@@ -82,7 +82,10 @@ export default function currencies() {
       const resDelete = await axios.delete(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/currency/deleteBillet`, 
         {
-          data: { idBillet: itemToDelete }
+          data: { 
+            idBillet: itemToDelete.id ,
+            isVariation :  itemToDelete.isVariation
+          }
         }
       );
       if (resDelete.status === 200) {
@@ -342,7 +345,7 @@ export default function currencies() {
                         <td className="px-6 py-4 whitespace-nowrap text-center">
                           <button
                             className="bg-red-500 text-white px-3 py-1 rounded-lg"
-                            onClick={() => handleDeleteClick(item.id)}
+                            onClick={() => handleDeleteClick(item)}
                           >
                             <MdDelete className="text-2xl" />
                           </button>
