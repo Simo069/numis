@@ -21,30 +21,11 @@ export default function RegisterForm() {
   const [firstname, setfirstname] = useState("");
   const [secondname, setsecondname] = useState("");
   const [error, setError] = useState("");
-
   const router = useRouter();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!name || !email || !password) {
       setError("All fields are necessary.");
-      return;
-    }
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/verify-email`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      }
-    );
-    const result = await response.json();
-
-    if (response.status === 400 && result.message === "Email is invalid") {
-      setError("enter a valid email please");
       return;
     }
     try {
@@ -64,7 +45,6 @@ export default function RegisterForm() {
           }),
         }
       );
-
       const response = await res.json();
       console.log("status :", res.status);
       if (res.status === 201) {
@@ -82,7 +62,6 @@ export default function RegisterForm() {
       setError("An unexpected error occurred. Please try again later.");
     }
   };
-
   return (
     <div className="min-h-screen relative bg-[url('/login.png')] bg-cover bg-center flex items-center justify-center  overflow-x-hidden">
       <div className="absolute inset-1 backdrop-filter backdrop-blur-sm bg-black bg-opacity-70 w-full m-0 p-0 left-0"></div>

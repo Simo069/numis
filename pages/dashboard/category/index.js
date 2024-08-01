@@ -17,7 +17,6 @@ export default function Category() {
   // const {message , state} = router.query
   const [searchTerm, setSearchTerm] = useState("");
   const { message: queryMessage, state: queryState } = router.query;
-
   const [message, setMessage] = useState("");
   const [state, setState] = useState("");
   // const [messagequery, setMessage] = useState("");
@@ -30,10 +29,12 @@ export default function Category() {
   const [image, setImage] = useState(null);
   const [dateIssue, setDateIssue] = useState("");
   const formRef = useRef(null);
-
   // delete category
   const [itemToDelete, setItemToDelete] = useState("");
   const [isModalConfirmationOpen, setIsModalConfirmationOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  
   const handleDeleteClick = (item) => {
     setItemToDelete(item);
     setIsModalConfirmationOpen(true);
@@ -74,12 +75,10 @@ export default function Category() {
     setIsModalConfirmationOpen(false);
     setItemToDelete(null);
   };
-
   const handleCloseModal = () => {
     setIsModalConfirmationOpen(false);
     setItemToDelete(null);
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("title", title);
@@ -125,7 +124,7 @@ export default function Category() {
     `${categorie.title}`.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const openModal = () => {
     setIsModalOpen(true);
   };

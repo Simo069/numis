@@ -3,8 +3,10 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { CiLogout } from "react-icons/ci";
 import { signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 const Sidebar = forwardRef(({ isSidebarOpen, toggleSidebar }, ref) => {
+  const { data: session } = useSession();
   const router = useRouter();
   const getLinkClass = (path) => {
     return router.pathname === path
@@ -194,7 +196,7 @@ const Sidebar = forwardRef(({ isSidebarOpen, toggleSidebar }, ref) => {
           >
             <Link className="no-underline" href="/dashboard/users">
               <div className="flex items-center">
-              <svg
+                <svg
                   className="w-5 h-5 mr-2"
                   fill="none"
                   stroke="currentColor"
@@ -212,6 +214,36 @@ const Sidebar = forwardRef(({ isSidebarOpen, toggleSidebar }, ref) => {
               </div>
             </Link>
           </li>
+          {session &&
+          session?.user?.email === "boukhatemmohammed15@gmail.com" ? (
+            <li
+              className={`px-6 py-3 hover:scale-105 ${getLinkClass(
+                "/dashboard/admins"
+              )}`}
+            >
+              <Link className="no-underline" href="/dashboard/admins">
+                <div className="flex items-center">
+                  <svg
+                    className="w-5 h-5 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  admins
+                </div>
+              </Link>
+            </li>
+          ) : (
+            ""
+          )}
           <li
             className={`px-6 py-3 hover:scale-105 ${getLinkClass(
               "/admin/settings"

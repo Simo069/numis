@@ -21,7 +21,7 @@ const Header = ({ toggleSidebar }) => {
     setIsOpen(false); // Close the dropdown menu when a link is clicked
   };
   return (
-    <nav className="bg-white text-blue-600 flex items-center justify-between px-6 py-3">
+    <nav className="bg-white text-blue-600 flex items-center justify-between px-6 py-3 ">
       <div className="flex items-center">
         <button
           className="lg:hidden mr-4 text-gray-400 hover:text-white focus:outline-none"
@@ -51,22 +51,22 @@ const Header = ({ toggleSidebar }) => {
             aria-expanded={isOpen ? "true" : "false"}
           >
             {/* <FaRegUserCircle className='text-2xl' /> */}
-            <div className="w-10 h-10 rounded-full overflow-hidden">
-              {user.image !== null ? (
+            <div className="w-12 h-12 rounded-full overflow-hidden">
+              {session?.user?.profile!== null ? (
                 <Image
-                  src={`/uploads/${user.image}`}
+                  src={session?.user?.profile}
                   alt="User Image"
                   width={64}
                   height={64}
-                  className="cursor-pointer"
+                  className="cursor-pointer h-full w-full rounded-full object-cover"
                 />
               ) : (
                 <Image
-                  src={`/uploads/default.png`}
+                  src={`/uploads/unknown.png`}
                   alt="User Image"
                   width={64}
                   height={64}
-                  className="cursor-pointer"
+                  className="cursor-pointer h-full w-full rounded-full object-cover"
                 />
               )}
             </div>
@@ -83,20 +83,20 @@ const Header = ({ toggleSidebar }) => {
             style={{ zIndex: 1000 }}
           >
             <div className="py-1" role="none">
-              <Link
-                href="/profile"
+              {/* <Link
+                href=""
                 className="block px-4 py-2 text-lg text-blue-700 hover:bg-blue-100 hover:text-blue-900 no-underline"
                 onClick={handleLinkClick}
               >
                 profile
-              </Link>
-              <Link
+              </Link> */}
+              {/* <Link
                 href=""
                 onClick={handleSignOut}
                 className="block px-4 py-2 text-lg text-red-700 hover:bg-red-100 hover:text-red-900 no-underline"
               >
                 Log Out
-              </Link>
+              </Link> */}
             </div>
           </div>
         </div>
