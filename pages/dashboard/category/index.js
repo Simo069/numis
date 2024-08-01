@@ -79,6 +79,7 @@ export default function Category() {
     setIsModalConfirmationOpen(false);
     setItemToDelete(null);
   };
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("title", title);

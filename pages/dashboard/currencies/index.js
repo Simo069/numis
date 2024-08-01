@@ -17,9 +17,157 @@ export default function currencies() {
   const [searchTerm, setSearchTerm] = useState("");
   const [message, setMessage] = useState("");
   const [state, setState] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalConfirmationOpen, setIsModalConfirmationOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [itemToAddVariation, setItemToAddVariation] = useState(null);
+  // handle logic of add a varition
+  const [variations, setVariations] = useState([
+    {
+      ref: "",
+      description: "",
+      nomDesSignataire: "",
+      issuedBy: "",
+      comments: "",
+      date: "",
+      imageFront: null,
+      imageBack: null,
+      imageSignature: null,
+    },
+  ]);
+  const handleVariationChange = (index, key, value) => {
+    const updateVariations = [...variations];
+    updateVariations[index][key] = value;
+    setVariations(updateVariations);
+  };
+  const handleImageChange = (index, key, file) => {
+    const updateVariations = [...variations];
+    updateVariations[index][key] = file;
+    setVariations(updateVariations);
+  };
+  const handleAddVariation = () => {
+    setVariations([
+      ...variations,
+      {
+        ref: "",
+        description: "",
+        nomDesSignataire: "",
+        issuedBy: "",
+        comments: "",
+        imageFront: null,
+        imageBack: null,
+        imageSignature: null,
+      },
+    ]);
+  };
+  const handleRemoveVariation = (index) => {
+    const updateVariations = [...variations];
+    updateVariations.splice(index, 1);
+    setVariations(updateVariations);
+  };
+  const handleAddVariationClick = (item) => {
+    setItemToAddVariation(item);
+    setIsModalOpen(true);
+    console.log(item.id);
+  };
+  const handleVariationCloseModal = () => {
+    setIsModalOpen(false);
+    setItemToAddVariation(null);
+  };
+  const handleSubmitAddvariation = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("id_currencies", itemToAddVariation.id);
+    variations.forEach((variation, index) => {
+      formData.append(`variations[${index}][ref]`, variation.ref);
+      formData.append(
+        `variations[${index}][description]`,
+        variation.description
+      );
+      formData.append(
+        `variations[${index}][nomDesSignataire]`,
+        variation.nomDesSignataire
+      );
+      formData.append(`variations[${index}][issuedBy]`, variation.issuedBy);
+      formData.append(`variations[${index}][comments]`, variation.comments);
+      formData.append(`variations[${index}][imageFront]`, variation.imageFront);
+      formData.append(`variations[${index}][imageBack]`, variation.imageBack);
+      formData.append(
+        `variations[${index}][imageSignature]`,
+        variation.imageSignature
+      );
+      formData.append(`variations[${index}][date]`, variation.date);
+      formData.append(`variations[${index}][type]`, variation.type);
+    });
+    try {
+      const resAddVariation = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/currency/addVariation`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      if (resAddVariation.status === 200) {
+        console.log("Variation adde", resAddVariation.data);
+        setVariations([
+          {
+            ref: "",
+            description: "",
+            nomDesSignataire: "",
+            issuedBy: "",
+            comments: "",
+            date: "",
+            type: "",
+            imageFront: null,
+            imageBack: null,
+            imageSignature: null,
+          },
+        ]);
+        setState("success");
+        setMessage("Variation added successfully...");
+        fetchAllBillet()
+      }else{
+        setState("danger");
+        setMessage("Error adding variation ,try again later please...");
+      }
+      setVariations([
+        {
+          ref: "",
+          description: "",
+          nomDesSignataire: "",
+          issuedBy: "",
+          comments: "",
+          date: "",
+          type: "",
+          imageFront: null,
+          imageBack: null,
+          imageSignature: null,
+        },
+      ]);
+      handleVariationCloseModal()
+    } catch (error) {
+      setVariations([
+        {
+          ref: "",
+          description: "",
+          nomDesSignataire: "",
+          issuedBy: "",
+          comments: "",
+          date: "",
+          type: "",
+          imageFront: null,
+          imageBack: null,
+          imageSignature: null,
+        },
+      ]);
+      handleVariationCloseModal()
+      console.error("Error when adding Variation ::",error)
+      setState("danger");
+      setMessage("Error adding variation ,try again later please...");
+    }
+  };
   const filteredCurrencies = currencies.filter((currencie) =>
     `${currencie.ref}`.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -42,14 +190,12 @@ export default function currencies() {
   const addBillet = async () => {
     router.push("currencies/addnewbillet");
   };
-
   const handleButtonClick = (idBillet, isVariation) => {
     router.push({
       pathname: `/dashboard/currencies/${idBillet}`,
       query: { isVariation: isVariation },
     });
   };
-
   useEffect(() => {
     const { message: messageQuery, state: stateQuery } = router.query;
     if (messageQuery) {
@@ -70,51 +216,52 @@ export default function currencies() {
       return () => clearTimeout(timer);
     }
   }, [state, message, router]);
-
   const handleDeleteClick = (item) => {
     setItemToDelete(item);
-    setIsModalOpen(true);
+    setIsModalConfirmationOpen(true);
   };
-  
   const handleConfirmDelete = async () => {
     console.log("item to delete ::", itemToDelete);
     try {
       const resDelete = await axios.delete(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/currency/deleteBillet`, 
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/currency/deleteBillet`,
         {
-          data: { 
-            idBillet: itemToDelete.id ,
-            isVariation :  itemToDelete.isVariation
-          }
+          data: {
+            idBillet: itemToDelete.id,
+            isVariation: itemToDelete.isVariation,
+          },
         }
       );
       if (resDelete.status === 200) {
         setState("success");
         setMessage("Billet deleted successfully from table currencies...");
         fetchAllBillet();
-        setIsModalOpen(false);
-    setItemToDelete(null);
+        setIsModalConfirmationOpen(false);
+        setItemToDelete(null);
       } else {
         setState("danger");
         setMessage(
           "Error when Deleting billet from table currencies. Try again later, please ..."
         );
-        setIsModalOpen(false);
-    setItemToDelete(null);
+        setIsModalConfirmationOpen(false);
+        setItemToDelete(null);
       }
     } catch (error) {
-      console.error("Error when deleting a billet from currencies in dashboard admin", error);
+      console.error(
+        "Error when deleting a billet from currencies in dashboard admin",
+        error
+      );
       setState("danger");
       setMessage(
         "Error when Deleting billet from table currencies. Try again later, please ..."
       );
     }
-    setIsModalOpen(false);
+    setIsModalConfirmationOpen(false);
     setItemToDelete(null);
   };
 
   const handleCloseModal = () => {
-    setIsModalOpen(false);
+    setIsModalConfirmationOpen(false);
     setItemToDelete(null);
   };
 
@@ -158,7 +305,7 @@ export default function currencies() {
                 <div>
                   <div className="font-bold">Error</div>
                   <div>
-                    Updating a category was unsuccessful. Please try again later
+                    {message}
                     .
                   </div>
                 </div>
@@ -342,7 +489,7 @@ export default function currencies() {
                         <td className="px-6 py-4 whitespace-nowrap text-center min-w-[200px]  max-w-[300px] text-wrap">
                           {item.issued_by}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-center">
+                        <td className="px-6 py-4 whitespace-nowrap text-center flex items-center align-middle">
                           <button
                             className="bg-red-500 text-white px-3 py-1 rounded-lg"
                             onClick={() => handleDeleteClick(item)}
@@ -357,6 +504,15 @@ export default function currencies() {
                           >
                             <GoMoveToEnd className="text-2xl" />
                           </button>
+                          {!item.isVariation && (
+                            <button
+                              className="bg-green-500 text-white px-3 py-1 rounded-lg ml-2"
+                              onClick={() => handleAddVariationClick(item)}
+                            >
+                              {/* <GoMoveToEnd className="text-2xl" /> */}
+                              add variation
+                            </button>
+                          )}
                         </td>
                       </tr>
                     ))}
@@ -397,11 +553,344 @@ export default function currencies() {
           )}
         </div>
         <ConfirmationModal
-          isOpen={isModalOpen}
+          isOpen={isModalConfirmationOpen}
           onClose={handleCloseModal}
           onConfirm={handleConfirmDelete}
           message={`Are you sure you want to delete this billet from. the currecnies table?`}
         />
+
+        <Modal isOpen={isModalOpen} onClose={isModalOpen}>
+          <h2 className="text-xl font-bold mb-4">Add New Category</h2>
+          <form
+            onSubmit={handleSubmitAddvariation}
+            encType="multipart/form-data"
+          >
+            <div className="mb-8">
+              <h1 className="text-2xl font-semibold mb-8 mt-8">Variations</h1>
+              {variations.map((variation, index) => (
+                <div key={index} className="flex flex-col gap-y-3">
+                  <div className="flex flex-col md:flex-row md:justify-start gap-5 gap-y-6">
+                    <div className="mb-4 md:w-1/2">
+                      <label
+                        htmlFor={variation.ref}
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Ref
+                      </label>
+                      <input
+                        type="text"
+                        id={variation.ref}
+                        name={variation.ref}
+                        value={variation.ref}
+                        onChange={(e) =>
+                          handleVariationChange(index, "ref", e.target.value)
+                        }
+                        className="mt-1 p-2 w-full border rounded-md"
+                        required
+                      />
+                    </div>
+                    <div className="mb-4 md:w-1/2">
+                      <label
+                        htmlFor={variation.type}
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Type
+                      </label>
+                      <input
+                        type="text"
+                        id={variation.type}
+                        name={variation.type}
+                        value={variation.type}
+                        onChange={(e) =>
+                          handleVariationChange(index, "type", e.target.value)
+                        }
+                        className="mt-1 p-2 w-full border rounded-md"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-col md:flex-row md:justify-start gap-5 gap-y-6">
+                    <div className="mb-4 md:w-1/2">
+                      <label
+                        htmlFor={variation.nomDesSignataire}
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Name of Signatures
+                      </label>
+                      <input
+                        type="text"
+                        id={variation.nomDesSignataire}
+                        name={variation.nomDesSignataire}
+                        value={variation.nomDesSignataire}
+                        onChange={(e) =>
+                          handleVariationChange(
+                            index,
+                            "nomDesSignataire",
+                            e.target.value
+                          )
+                        }
+                        className="mt-1 p-2 w-full border rounded-md"
+                        required
+                      />
+                    </div>
+                    <div className="mb-4 md:w-1/2">
+                      <label
+                        htmlFor={variation.date}
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Date
+                      </label>
+                      <input
+                        type="text"
+                        id={variation.date}
+                        name={variation.date}
+                        value={variation.date}
+                        onChange={(e) =>
+                          handleVariationChange(index, "date", e.target.value)
+                        }
+                        className="mt-1 p-2 w-full border rounded-md"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-col md:flex-row md:justify-start gap-5 gap-y-6">
+                    <div className="mb-4 md:w-1/2">
+                      <label
+                        htmlFor={variation.issuedBy}
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Issued by
+                      </label>
+                      <input
+                        type="text"
+                        id={variation.issuedBy}
+                        name={variation.issuedBy}
+                        value={variation.issuedBy}
+                        onChange={(e) =>
+                          handleVariationChange(
+                            index,
+                            "issuedBy",
+                            e.target.value
+                          )
+                        }
+                        className="mt-1 p-2 w-full border rounded-md"
+                        required
+                      />
+                    </div>
+                    <div className="mb-4 md:w-1/2">
+                      <label
+                        htmlFor={variation.comments}
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        comment
+                      </label>
+                      <input
+                        type="text"
+                        id={variation.comments}
+                        name={variation.comments}
+                        value={variation.comments}
+                        onChange={(e) =>
+                          handleVariationChange(
+                            index,
+                            "comments",
+                            e.target.value
+                          )
+                        }
+                        className="mt-1 p-2 w-full border rounded-md"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="md:w-1/2">
+                    <label
+                      for={variation.description}
+                      class="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      Description
+                    </label>
+                    <div class="mt-2">
+                      <textarea
+                        id={variation.description}
+                        name={variation.description}
+                        rows="3"
+                        placeholder="writea few line to descripe the product"
+                        onChange={(e) =>
+                          handleVariationChange(
+                            index,
+                            "description",
+                            e.target.value
+                          )
+                        }
+                        class="block w-full rounded-md border  focus:border-indigo-500 focus:ring-indigo-500 focus:ring-opacity-50"
+                      ></textarea>
+                    </div>
+                  </div>
+                  <div className="mb-4 flex flex-col md:flex-row md:justify-start gap-3 mt-4">
+                    <div className="md:w-1/3">
+                      <label
+                        htmlFor={index}
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Image Front:
+                      </label>
+                      <div className="mt-2  flex justify-center rounded-lg border border-dashed border-gray-900/25 px-2 py-2">
+                        <div className="text-center">
+                          <div className="mt-4  flex text-sm leading-6 text-gray-600">
+                            <label
+                              htmlFor={index}
+                              className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
+                            >
+                              <span>Upload a file</span>
+                              <input
+                                id={index}
+                                name={index}
+                                type="file"
+                                className="sr-only"
+                                onChange={(e) =>
+                                  handleImageChange(
+                                    index,
+                                    "imageFront",
+                                    e.target.files[0]
+                                  )
+                                }
+                                required
+                              />
+                            </label>
+                            <p className="pl-1">or drag and drop</p>
+                          </div>
+                          {variation.imageFront && (
+                            <p className="mt-2 text-lg leading-5 text-gray-900 font-bold ">
+                              {variation.imageFront.name}
+                            </p>
+                          )}
+                          <p className="text-xs leading-5 text-gray-600">
+                            PNG, JPG, GIF up to 10MB
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="md:w-1/3">
+                      <label
+                        htmlFor="cover-photo"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Image Back:
+                      </label>
+                      <div className="mt-2  flex justify-center rounded-lg border border-dashed border-gray-900/25 px-2 py-2">
+                        <div className="text-center">
+                          <div className="mt-4  flex text-sm leading-6 text-gray-600">
+                            <label
+                              htmlFor={variation.imageBack}
+                              className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
+                            >
+                              <span>Upload a file</span>
+                              <input
+                                id={variation.imageBack}
+                                name={variation.imageBack}
+                                type="file"
+                                className="sr-only"
+                                onChange={(e) =>
+                                  handleImageChange(
+                                    index,
+                                    "imageBack",
+                                    e.target.files[0]
+                                  )
+                                }
+                                required
+                              />
+                            </label>
+                            <p className="pl-1">or drag and drop</p>
+                          </div>
+                          {variation.imageBack && (
+                            <p className="mt-2 text-lg leading-5 text-gray-900 font-bold ">
+                              {variation.imageBack.name}
+                            </p>
+                          )}
+                          <p className="text-xs leading-5 text-gray-600">
+                            PNG, JPG, GIF up to 10MB
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="md:w-1/3">
+                      <label
+                        htmlFor="cover-photo"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Image Signature:
+                      </label>
+                      <div className="mt-2  flex justify-center rounded-lg border border-dashed border-gray-900/25 px-2 py-2">
+                        <div className="text-center">
+                          <div className="mt-4  flex text-sm leading-6 text-gray-600">
+                            <label
+                              htmlFor={variation.imageSignature}
+                              className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
+                            >
+                              <span>Upload a file</span>
+                              <input
+                                id={variation.imageSignature}
+                                name={variation.imageSignature}
+                                type="file"
+                                className="sr-only"
+                                onChange={(e) =>
+                                  handleImageChange(
+                                    index,
+                                    "imageSignature",
+                                    e.target.files[0]
+                                  )
+                                }
+                              />
+                            </label>
+                            <p className="pl-1">or drag and drop</p>
+                          </div>
+                          {variation.imageSignature && (
+                            <p className="mt-2 text-lg leading-5 text-gray-900 font-bold ">
+                              {variation.imageSignature.name}
+                            </p>
+                          )}
+                          <p className="text-xs leading-5 text-gray-600">
+                            PNG, JPG, GIF up to 10MB
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    className="block font-bold text-sm text-white bg-gray-700 px-2 py-2 rounded mt-3 transform hover:scale-100 w-[170px] mb-8"
+                    onClick={() => handleRemoveVariation(index)}
+                  >
+                    Remove Variation
+                  </button>
+                </div>
+              ))}
+              <button
+                type="button"
+                className="block text-sm font-medium text-white bg-indigo-500 px-2 py-2 rounded mt-3 transform hover:scale-100"
+                onClick={handleAddVariation}
+              >
+                Add Variation
+              </button>
+            </div>
+            <div className="flex justify-end">
+              <button
+                type="button"
+                // onClick={()=>setIsModalOpen(false)}
+                onClick={handleVariationCloseModal}
+                className="mr-2 bg-white hover:bg-gray-200 text-indigo-500 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              >
+                Add
+              </button>
+            </div>
+          </form>
+        </Modal>
       </DashboardLayout>
     </>
   );

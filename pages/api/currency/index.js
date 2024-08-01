@@ -119,28 +119,6 @@ export default async function handler(req, res) {
           type:type[0],
         },
       });
-
-      // const parsedVariations = JSON.parse(variations);
-      // console.log("parsedVariations :::" , parsedVariations)
-      // for (const variation of parsedVariations) {
-      //   const variationImageFrontPath = saveImage(variation.imageFront[0]);
-      //   const variationImageBackPath = saveImage(variation.imageBack[0]);
-      //   const variationImageSignaturePath = saveImage(variation.imageSignature[0]);
-
-      //   await db.variation.create({
-      //     data: {
-      //       ref: variation.ref,
-      //       description: variation.description,
-      //       nom_des_signataire: variation.nomDesSignataire,
-      //       issued_by: variation.issuedBy,
-      //       comments: variation.comments,
-      //       imagefront: variationImageFrontPath,
-      //       imageback: variationImageBackPath,
-      //       imagesignature: variationImageSignaturePath,
-      //       currenciesId: newCurrency.id,
-      //     },
-      //   });
-      // }
       console.log("variations :: ",variations)
       const parsedVariations = [];
       for (let i = 0; i < Object.keys(fields).length; i++) {
