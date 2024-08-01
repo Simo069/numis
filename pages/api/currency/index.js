@@ -9,12 +9,10 @@ export const config = {
     bodyParser: false,
   },
 };
-
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
-
   // const form = new IncomingForm();
   // form.uploadDir = "./public/uploads";
   // form.keepExtensions = true;
@@ -25,13 +23,11 @@ export default async function handler(req, res) {
       return `temp_${Date.now()}${ext}`;
     },
   });
-
   form.parse(req, async (err, fields, files) => {
     if (err) {
       console.error("Error parsing form:", err);
       return res.status(500).json({ error: "Error parsing form data" });
     }
-
     const {
       ref,
       title,
@@ -45,29 +41,23 @@ export default async function handler(req, res) {
       date,
       type
     } = fields;
-
     const saveImage = async (file) => {
       if (!file || !file.filepath) {
         console.log("No file provided");
         return null;
       }
-
       const oldPath = path.resolve(file.filepath);
       const uploadDir = path.join(process.cwd(), "public", "uploads");
-
       const fileExtension = path.extname(file.originalFilename || "");
       const fileName = `${Date.now()}-${Math.round(
         Math.random() * 1e9
       )}${fileExtension}`;
       const newPath = path.join(uploadDir, fileName);
-
       console.log("Old path:", oldPath);
       console.log("New path:", newPath);
-
       try {
         // Vérifiez si le fichier source existe
         await fs.access(oldPath);
-
         // Utilisez copyFile et unlink au lieu de rename
         await fs.copyFile(oldPath, newPath);
         try {
@@ -78,7 +68,6 @@ export default async function handler(req, res) {
             unlinkError
           );
         }
-
         console.log("File saved successfully");
         return `/uploads/${fileName}`;
       } catch (error) {
@@ -86,9 +75,6 @@ export default async function handler(req, res) {
         return null;
       }
     };
-
-
-
     try {
       const [imageFrontPath, imageBackPath, imageSignaturePath] =
         await Promise.all([
@@ -96,7 +82,6 @@ export default async function handler(req, res) {
           saveImage(files.imageback ? files.imageback[0] : null),
           saveImage(files.imagesignature ? files.imagesignature[0] : null),
         ]);
-
       if (!imageFrontPath || !imageBackPath ) {
         return res.status(400).json({ error: "Images are required" });
       }
@@ -137,7 +122,6 @@ export default async function handler(req, res) {
           });
         }
       }
-
       for (const variation of parsedVariations) {
         const variationImageFrontPath = await saveImage(variation.imageFront);
         const variationImageBackPath = await saveImage(variation.imageBack);
@@ -163,7 +147,6 @@ export default async function handler(req, res) {
           },
         });
       }
-
       res.status(200).json(newCurrency);
     } catch (error) {
       console.error("Error saving currency:", error);

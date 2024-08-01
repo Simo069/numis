@@ -220,12 +220,10 @@ export default async function handler(req, res) {
             back: variationImageBackPath,
             signature: variationImageSignaturePath,
           });
-
           if (!variationImageFrontPath || !variationImageBackPath) {
             console.error("Missing required image for variation:", variation.ref);
             continue;
           }
-
           await db.variation.create({
             data: {
               ref: variation.ref,
