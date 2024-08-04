@@ -18,6 +18,7 @@ export default async function handler(req, res) {
     ...currency.variations.map((variation) => ({
         ...variation,
         title: currency.title, // Add the parent currency title to the variation
+        currencyId : currency.currencyId,
         isVariation: true,
     })),
     ]);

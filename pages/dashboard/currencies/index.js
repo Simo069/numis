@@ -12,6 +12,7 @@ import ConfirmationModal from "@/components/ConfirmationModal";
 
 export default function currencies() {
   const [currencies, setCurrencies] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
@@ -21,6 +22,7 @@ export default function currencies() {
   const [itemToDelete, setItemToDelete] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [itemToAddVariation, setItemToAddVariation] = useState(null);
+  const [statusFilter, setStatusFilter] = useState("");
   // handle logic of add a varition
   const [variations, setVariations] = useState([
     {
@@ -35,6 +37,31 @@ export default function currencies() {
       imageSignature: null,
     },
   ]);
+  // const filteredCurrencies = currencies.filter((currencie) =>
+  //   `${currencie.ref}`.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
+  const filteredCurrencies = currencies.filter(
+    (currencie) =>
+      `${currencie.ref}`.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      (statusFilter === "" || currencie.currencyId == statusFilter)
+  );
+  const fetchItemsCatalog = async () => {
+    try {
+      const resCategories = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/catalog/getItemcatalog`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const responseCategories = await resCategories.json();
+      setCategories(responseCategories);
+    } catch (error) {
+      console.log("Error fetching categories in page admin: ", error);
+    }
+  };
   const handleVariationChange = (index, key, value) => {
     const updateVariations = [...variations];
     updateVariations[index][key] = value;
@@ -127,8 +154,8 @@ export default function currencies() {
         ]);
         setState("success");
         setMessage("Variation added successfully...");
-        fetchAllBillet()
-      }else{
+        fetchAllBillet();
+      } else {
         setState("danger");
         setMessage("Error adding variation ,try again later please...");
       }
@@ -146,7 +173,7 @@ export default function currencies() {
           imageSignature: null,
         },
       ]);
-      handleVariationCloseModal()
+      handleVariationCloseModal();
     } catch (error) {
       setVariations([
         {
@@ -162,17 +189,16 @@ export default function currencies() {
           imageSignature: null,
         },
       ]);
-      handleVariationCloseModal()
-      console.error("Error when adding Variation ::",error)
+      handleVariationCloseModal();
+      console.error("Error when adding Variation ::", error);
       setState("danger");
       setMessage("Error adding variation ,try again later please...");
     }
   };
-  const filteredCurrencies = currencies.filter((currencie) =>
-    `${currencie.ref}`.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+
   useEffect(() => {
     fetchAllBillet();
+    fetchItemsCatalog();
   }, []);
   const fetchAllBillet = async () => {
     try {
@@ -183,6 +209,7 @@ export default function currencies() {
       if (resBillet) {
         setCurrencies(resBillet.data);
       }
+      console.log("resBillet---",resBillet)
     } catch (error) {
       console.log("Error fetching All Billet: ", error);
     }
@@ -304,10 +331,7 @@ export default function currencies() {
                 <ExclamationTriangleIcon className="h-4 w-4 mt-1" />
                 <div>
                   <div className="font-bold">Error</div>
-                  <div>
-                    {message}
-                    .
-                  </div>
+                  <div>{message}.</div>
                 </div>
               </div>
             )}
@@ -324,6 +348,17 @@ export default function currencies() {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                <option value="">select categories</option>
+                {categories.map((categorie , index)=>(
+                  <option key={index} value={categorie.id}>{categorie.title}</option>
+                ))}
+              
+              </select>
               <button
                 className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded shadow-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-300"
                 onClickCapture={addBillet}
