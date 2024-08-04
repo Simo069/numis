@@ -7,21 +7,17 @@ import Collection from "@/components/Collection";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-
-
 export default function profile() {
   const [messagequery, setMessagequery] = useState(null);
-  const [activeTab, setActiveTab] = useState("personalInfo");
+  const [activeTab, setActiveTab] = useState("publishedProducts");
   const { data: session, status } = useSession();
   const router = useRouter()
-
   useEffect(() => {
     if (status === "loading") return;
     if (!session ) {
       router.replace("/");
     }
   }, [session, status, router]);
-
   return (
     <MaxWidthWrapper className="">
       <div className="flex  flex-col min-h-screen">
@@ -55,7 +51,7 @@ export default function profile() {
               >
                 Collection
               </button>
-              <button
+              {/* <button
                 className={`mx-2 width-[100px] my-1 py-2 px-4 rounded-lg focus:outline-none transition-colors duration-300 ${
                   activeTab === "likedProducts"
                     ? "bg-green-600 text-white"
@@ -63,7 +59,7 @@ export default function profile() {
                 }`}
                 onClick={() => setActiveTab("likedProducts")}
               >
-                test 2
+                
               </button>
               <button
                 className={`mx-2 width-[100px] my-1 py-2 px-4 rounded-lg focus:outline-none transition-colors duration-300 ${
@@ -73,23 +69,22 @@ export default function profile() {
                 }`}
                 onClick={() => setActiveTab("matchedProducts")}
               >
-                test 3
-              </button>
+                
+              </button> */}
             </div>
             <div className="mt-20">
               {activeTab === "personalInfo" &&
                 <UserInfo/>
               }
-
               {activeTab === "publishedProducts" &&
                 <Collection/>
               } 
               {activeTab === "likedProducts" &&
                 // <LikedProducts user={user} />
-                "test 2"}
+                ""}
               {activeTab === "matchedProducts" &&
                 // <Matchedproduct user={user} />
-                "test 3"}
+                ""}
             </div>
           </div>
         </div>

@@ -234,7 +234,7 @@ export default function BilletMonnaie() {
             )}
           </div>
           <MaxWidthWrapper className="pb-24 pt-10 flex flex-col items-center md:items-start gap-y-10 sm:pb-32 lg:gap-x-0 xl:gap-x-8 lg:pt-32 lg:pb-52">
-            <div className="flex items-center gap-2 text-center align-middle mb-6">
+            <div className="flex items-center  gap-2 text-center   mb-6">
               <GoArrowRight className="text-4xl hidden md:block" />
               <h1 className="scroll-m-20 text-3xl font-bold tracking-tight lg:text-4xl">
                 {currency.title}
@@ -287,15 +287,17 @@ export default function BilletMonnaie() {
                   width={400}
                   height={300}
                   src={currency.imagefront}
-                  className="rounded-lg object-cover"
+                  className="rounded-lg object-cover cursor-pointer"
                   alt="Front"
+                  onClick={() => setSelectedImage(currency.imagefront)}
                 />
                 <Image
                   width={400}
                   height={300}
                   src={currency.imageback}
-                  className="rounded-lg object-cover"
+                  className="rounded-lg object-cover cursor-pointer"
                   alt="Back"
+                  onClick={() => setSelectedImage(currency.imageback)}
                 />
               </div>
               <div className="p-9 flex flex-col sm:flex-row gap-5 items-center">
@@ -306,7 +308,7 @@ export default function BilletMonnaie() {
                     </h3>
                     <img
                       src={currency.imagesignature}
-                      className="w-[300px] object-cover"
+                      className="w-[300px] object-cover cursor-pointer" 
                       alt="Signature"
                       onClick={() => setSelectedImage(currency.imagesignature)}
                     />
@@ -392,15 +394,17 @@ export default function BilletMonnaie() {
                           width={400}
                           height={300}
                           src={variation.imagefront}
-                          className="rounded-lg object-cover"
+                          className="rounded-lg object-cover cursor-pointer"
                           alt="Front"
+                          onClick={() => setSelectedImage(variation.imagefront)}
                         />
                         <Image
                           width={400}
                           height={300}
                           src={variation.imageback}
-                          className="rounded-lg object-cover"
+                          className="rounded-lg object-cover cursor-pointer"
                           alt="Back"
+                          onClick={() => setSelectedImage(variation.imageback)}
                         />
                       </div>
                       <div className="p-9 flex flex-col sm:flex-row gap-5 items-center">
@@ -411,7 +415,7 @@ export default function BilletMonnaie() {
                             </h3>
                             <img
                               src={variation.imagesignature}
-                              className="w-[300px] object-cover"
+                              className="w-[300px] object-cover cursor-pointer"
                               alt="Signature"
                               onClick={() =>
                                 setSelectedImage(variation.imagesignature)

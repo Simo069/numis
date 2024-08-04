@@ -6,96 +6,7 @@ import { useSession } from "next-auth/react";
 import axios from "axios";
 
 export default function UserInfo() {
-//   const { data : session } = useSession();
-//   const [user , setUser] = useState({})
-//   const [id, setid] = useState(session?.user?.id);
-//   const [firstname, setfirstname] = useState("");
-//   const [secondname, setsecondname] = useState("");
-//   const [username, setusername] = useState("");
-//   const [image, setImage] = useState(null);
-//   const [email, setemail] = useState("");
-//   const [isModalOpen, setIsModalOpen] = useState(false);
-//   const [state, setState] = useState("");
-//   const [message, setMessage] = useState("");
-
-//   const openModal = () => {
-//     setIsModalOpen(true);
-//   };
-//   const closeModal = () => {
-//     setIsModalOpen(false);
-//   };
-//   const handleImageChange = (file) => {
-//     setImage(file);
-//   };
-// useEffect(() => {
-//     // setid(session?.user?.id);
-//     // setfirstname(session?.user?.firstname);
-//     // setsecondname(session?.user?.secondname);
-//     // setusername(session?.user?.username);
-//     // setImage(session?.user?.image);
-//     // setemail(session?.user?.email);
-//     fetchinformationUser(id)
-//   }, []);
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     const formData = new FormData();
-//     formData.append("id", id);
-//     formData.append("firstname", firstname);
-//     formData.append("secondname", secondname);
-//     formData.append("username", username);
-//     formData.append("email", email);
-//     formData.append("image", image);
-
-//     try {
-//       const res = await axios.put(
-//         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/register/edituser`,
-//         formData,
-//         {
-//           headers: {
-//             "Content-Type": "multipart/form-data",
-//           },
-//         }
-//       );
-//       if (res.status === 200) {
-//         setIsModalOpen(false);
-//         setState("success");
-//         setMessage("User Information updated successfully...");
-//       } else {
-//         setIsModalOpen(false);
-//         setState("danger");
-//         setMessage("Error when Updating User Information ...");
-//       }
-//     } catch (error) {
-//       console.error("Error updating Information ...");
-//     }
-//   };
-
-  
-
-//   const fetchinformationUser=async (id)=>{
-//     try {
-//       const resUser = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/user/getUser`,
-//     {id : session?.user?.id}
-//     )
-//     setUser(resUser)
-//     // setid(resUser.id);
-//     setfirstname(resUser.firstname);
-//     setsecondname(resUser.secondname);
-//     setusername(resUser.username);
-//     setImage(resUser.image);
-//     setemail(resUser.email);
-//     } catch (error) {
-//       console.error("Error fetching user data:", error);
-//     }
-    
-//   }
-//   if (message || state) {
-//     setTimeout(() => {
-//       setState("");
-//       setMessage("");
-//     }, 5000);
-//   }
-const { data: session, status } = useSession();
+  const { data: session, status } = useSession();
   const [user, setUser] = useState({});
   const [id, setId] = useState(null);
   const [firstname, setFirstname] = useState("");
@@ -188,7 +99,6 @@ const { data: session, status } = useSession();
       setMessage("");
     }, 5000);
   }
-
 
   return (
     <MaxWidthWrapper>

@@ -13,14 +13,16 @@ export default async function handler(req, res) {
       include: {
         currency: {
           include :{
-            currency : true
+            currency : true,
+            variations:true,
           }
         },
         variation: {
           include: {
             currencies: {
               include :{
-                currency : true
+                currency : true,
+                variations:true
               }
             }, 
           },

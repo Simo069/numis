@@ -149,7 +149,7 @@ export default function addnewbillet() {
           },
         }
       );
-      console.log("Currency added:", res.data);
+      // console.log("Currency added:", res.data);
 
       // Reset form fields
       setRef("");
@@ -181,7 +181,38 @@ export default function addnewbillet() {
       ]);
 
       // Show success message
-      setMessage("Currency added successfully!");
+      if(res.status === 200){
+        setMessage("Billet added successfully!");
+      }else{
+        setMessage("Error adding new billet try again please ");
+      }
+      setRef("");
+      setType("");
+      setTitle("");
+      setCurrencyId("");
+      setDate("");
+      setValue("");
+      setIssuedBy("");
+      setDescription("");
+      setComment("");
+      setNameofSignatures("");
+      setImageFront(null);
+      setImageBack(null);
+      setImageSignature(null);
+      setVariations([
+        {
+          ref: "",
+          description: "",
+          nomDesSignataire: "",
+          issuedBy: "",
+          comments: "",
+          date: "",
+          type: "",
+          imageFront: null,
+          imageBack: null,
+          imageSignature: null,
+        },
+      ]);
 
       // Clear success message after 5 seconds
       setTimeout(() => {
