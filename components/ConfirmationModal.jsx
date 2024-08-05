@@ -1,4 +1,3 @@
-// components/ConfirmationModal.js
 import React from "react";
 
 const ConfirmationModal = ({ isOpen, onClose, onConfirm, message }) => {
