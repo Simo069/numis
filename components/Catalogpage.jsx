@@ -47,7 +47,7 @@ const Catalogpage = () => {
   useEffect(() => {
     const fetchCurrencies = async () => {
       try {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/catalog/getItemcatalog`);
+        const response = await axios.get(`/api/catalog/getItemcatalog`);
         setCurrencies(response.data);
         console.log(response.data)
       } catch (error) {

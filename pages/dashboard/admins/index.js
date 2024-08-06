@@ -51,7 +51,7 @@ export default function users() {
   const fetchUsers = async () => {
     try {
       const resUsers = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/user/getAdmins`
+        `/api/user/getAdmins`
       );
       setUsers(resUsers.data);
       console.log("resUsers::", resUsers.data);
@@ -69,7 +69,7 @@ export default function users() {
     console.log("item to delete ::", itemToDelete);
     try {
       const resDelete = await axios.delete(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/user/deleteUser`,
+        `/api/user/deleteUser`,
         {
           data: {
             idUser: itemToDelete.id,
@@ -124,7 +124,7 @@ export default function users() {
     }
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/register`,
+        `/api/register`,
         {
           method: "POST",
           headers: {

@@ -21,7 +21,7 @@ export default function collection() {
   const fetchBilletCollection = async (idUser) => {
     try {
       const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/collection/${idUser}`
+        `/api/collection/${idUser}`
       );
       setBilletCollection(res.data);
       setUsername(res.data[0].user.username)

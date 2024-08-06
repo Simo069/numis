@@ -49,7 +49,7 @@ export default function UserInfo() {
 
     try {
       const res = await axios.put(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/register/edituser`,
+        `/api/register/edituser`,
         formData,
         {
           headers: {
@@ -77,7 +77,7 @@ export default function UserInfo() {
   const fetchInformationUser = async (userId) => {
     try {
       const resUser = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/user/getUser`,
+        `/api/user/getUser`,
         { id: userId }
       );
       const userData = resUser.data;

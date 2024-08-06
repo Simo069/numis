@@ -40,7 +40,7 @@ export default function BilletMonnaie() {
     console.log(`Deleting item: ${itemToDelete.id}`);
     try {
       const resDelete = await axios.delete(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/collection/deleteFromCollection`,
+        `/api/collection/deleteFromCollection`,
         {
           data: {
             userId: userId,
@@ -86,7 +86,7 @@ export default function BilletMonnaie() {
   const fetchCurrenciesInfo = async (currencyId) => {
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/catalog/getCurrencies`,
+        `/api/catalog/getCurrencies`,
         { id: currencyId }
       );
       setCurrencies(response.data);
@@ -103,7 +103,7 @@ export default function BilletMonnaie() {
   const fetchCurrencyInfo = async (currencyId) => {
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/currency/getCurrenciesInfo`,
+        `/api/currency/getCurrenciesInfo`,
         { id: currencyId }
       );
       setCurrency(response.data);
@@ -116,7 +116,7 @@ export default function BilletMonnaie() {
   const fetchVariationsInfo = async (currencyId) => {
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/currency/getVariationsInfo`,
+        `/api/currency/getVariationsInfo`,
         { id: currencyId }
       );
       setVariations(response.data);
@@ -173,7 +173,7 @@ export default function BilletMonnaie() {
     console.log("idCategory---::", idCategory);
     try {
       const resAddCollection = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/collection/addToCollection`,
+        `/api/collection/addToCollection`,
         {
           userId: userId,
           billetId: billetId,
@@ -199,7 +199,7 @@ export default function BilletMonnaie() {
   const fetchUserCollection = async (userId) => {
     try {
       const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/collection/${userId}`
+        `/api/collection/${userId}`
       );
       setUserCollections(res.data);
     } catch (error) {

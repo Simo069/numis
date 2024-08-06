@@ -30,7 +30,6 @@ export default function Navbar() {
           <Link href="/" className="flex z-40 font-semibold items-center">
             <span className="text-green-600">numis</span>
           </Link>
-
           <div className="h-full flex items-center space-x-4 ">
             <div className="links flex gap-5 text-sm font-semibold  ">
               <Link href="/" className="transform hover:scale-110 ">

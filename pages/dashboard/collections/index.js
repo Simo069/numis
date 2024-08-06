@@ -24,7 +24,7 @@ export default function collections() {
   const fetchCollections = async () => {
     try {
       const resCollection = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/collection/getCollectionsByUser`
+        `/api/collection/getCollectionsByUser`
       );
       setCollections(resCollection.data);
       console.log("resCollection::", resCollection.data);

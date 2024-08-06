@@ -21,7 +21,7 @@ export default function Home() {
                 if (email) {
                     try {
                         const resUserExists = await fetch(
-                            `${process.env.NEXT_PUBLIC_URL}/api/userExist`,
+                            `/api/userExist`,
                             {
                                 method: "POST",
                                 headers: {

@@ -39,7 +39,7 @@ export default function addnewbillet() {
   useEffect(() => {
     async function fetchCurrencyItem() {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/catalog/getItemcatalog`
+        `/api/catalog/getItemcatalog`
       );
       setCurrencyItem(response.data);
     }
@@ -141,7 +141,7 @@ export default function addnewbillet() {
 
     try {
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/currency`,
+        `/api/currency`,
         formData,
         {
           headers: {

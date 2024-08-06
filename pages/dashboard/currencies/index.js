@@ -48,7 +48,7 @@ export default function currencies() {
   const fetchItemsCatalog = async () => {
     try {
       const resCategories = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/catalog/getItemcatalog`,
+        `/api/catalog/getItemcatalog`,
         {
           method: "GET",
           headers: {
@@ -128,7 +128,7 @@ export default function currencies() {
     });
     try {
       const resAddVariation = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/currency/addVariation`,
+        `/api/currency/addVariation`,
         formData,
         {
           headers: {
@@ -203,7 +203,7 @@ export default function currencies() {
   const fetchAllBillet = async () => {
     try {
       const resBillet = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/currency/getAllBillet`
+        `/api/currency/getAllBillet`
       );
 
       if (resBillet) {
@@ -251,7 +251,7 @@ export default function currencies() {
     console.log("item to delete ::", itemToDelete);
     try {
       const resDelete = await axios.delete(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/currency/deleteBillet`,
+        `/api/currency/deleteBillet`,
         {
           data: {
             idBillet: itemToDelete.id,

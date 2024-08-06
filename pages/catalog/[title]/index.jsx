@@ -36,7 +36,7 @@ export default function riff() {
   const fetchuserCollection = async (userId) => {
     try {
       const rescollection = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/collection/${userId}`
+        `/api/collection/${userId}`
       );
       setUserCollection(rescollection.data);
       console.log("rescollection::__",rescollection.data)
@@ -51,7 +51,7 @@ export default function riff() {
     try {
       console.log("test ::::::");
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/catalog/getCurrencyItemInfo`,
+        `/api/catalog/getCurrencyItemInfo`,
         { id: currencyId }
       );
       setCurrencyItem(response.data);
@@ -62,7 +62,7 @@ export default function riff() {
   const fetchCurrenciesInfo = async (currencyId) => {
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/catalog/getCurrencies`,
+        `/api/catalog/getCurrencies`,
         { id: currencyId }
       );
       setCurrencies(response.data);

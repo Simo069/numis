@@ -28,7 +28,7 @@ export default function updateBillet() {
   const fetchCurrencyItem = async () => {
     try {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/catalog/getItemcatalog`
+        `/api/catalog/getItemcatalog`
       );
       setCurrencyItem(response.data);
     } catch (error) {
@@ -48,7 +48,7 @@ export default function updateBillet() {
   const fetchBilletInfo = async (currencyId) => {
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/currency/getCurrenciesInfo`,
+        `/api/currency/getCurrenciesInfo`,
         { id: currencyId }
       );
       const currency = response.data;
@@ -74,7 +74,7 @@ export default function updateBillet() {
   const fetchBilletVariationInfo = async (currencyId) => {
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/currency/oneVariationInfo`,
+        `/api/currency/oneVariationInfo`,
         { id: currencyId }
       );
       console.log("Variation API response:", response.data);
@@ -120,7 +120,7 @@ export default function updateBillet() {
     }
     try {
       const res = await axios.put(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/currency/updateBillet`,
+        `/api/currency/updateBillet`,
         formData,
         {
           headers: {

@@ -20,7 +20,7 @@ export default function editCategory() {
   },[idCategory])
   const getCategoryInfo = async (id)=>{
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/catalog/getCurrencyItemInfo`,
+      const response = await axios.post(`/api/catalog/getCurrencyItemInfo`,
       {id:idCategory}
       )
       setCurrencyInfo(response.data)
@@ -48,7 +48,7 @@ export default function editCategory() {
     formData.append("image",image)
     try{
       const res = await axios.put(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/catalog/updateCategory`,
+        `/api/catalog/updateCategory`,
         formData,
         {
           headers: {

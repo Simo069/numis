@@ -20,7 +20,7 @@ const DashboardPage = () => {
 
   const fetchUsers = async () => {
     try {
-      const resUsers = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/user/getUsers`);
+      const resUsers = await axios.get(`/api/user/getUsers`);
       setUsers(resUsers.data);
       setLoading(false);
     } catch (error) {
@@ -29,7 +29,7 @@ const DashboardPage = () => {
   };
   const fetchBillets = async () => {
     try {
-      const resBillets = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/currency/getAllBillet`);
+      const resBillets = await axios.get(`/api/currency/getAllBillet`);
       setBillets(resBillets.data);
       setLoading(false);
     } catch (error) {
@@ -39,7 +39,7 @@ const DashboardPage = () => {
 
   const fetchCollections = async () => {
     try {
-      const resCollections = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/collection/getCollectionsByUser`);
+      const resCollections = await axios.get(`/api/collection/getCollectionsByUser`);
       setCollections(resCollections.data);
       setLoading(false);
     } catch (error) {
@@ -48,7 +48,7 @@ const DashboardPage = () => {
   };
   const fetchCategories = async () => {
     try {
-      const resCategories = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/catalog/getItemcatalog`);
+      const resCategories = await axios.get(`/api/catalog/getItemcatalog`);
       setCategories(resCategories.data);
       setLoading(false);
     } catch (error) {

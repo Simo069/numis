@@ -22,7 +22,7 @@
 // //   },[userId])
 // //   const fetchBilletColection=async(userId)=>{
 // //     try {
-// //       const resCollection = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/collection/${userId}`)
+// //       const resCollection = await axios.get(`/api/collection/${userId}`)
 // //       setBilletCollection(resCollection)
 // //       console.log("resCollection---:::",resCollection)
 // //     } catch (error) {
@@ -95,7 +95,7 @@
 //   const fetchBilletCollection = async (userId) => {
 //     try {
 //       const res = await axios.get(
-//         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/collection/${userId}`
+//         `/api/collection/${userId}`
 //       );
 //       setBilletCollection(res.data);
 //       console.log("resCollection---:::", res.data);
@@ -310,7 +310,7 @@ export default function Collection() {
   const fetchBilletCollection = async (userId) => {
     try {
       const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/collection/${userId}`
+        `/api/collection/${userId}`
       );
       groupCollectionByCategory(res.data);
     } catch (error) {

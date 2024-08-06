@@ -43,7 +43,7 @@ export default function Category() {
     console.log("item to delete ::", itemToDelete);
     try {
       const resDelete = await axios.delete(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/catalog/deleteCategory`,
+        `/api/catalog/deleteCategory`,
         {
           data: { idCategory: itemToDelete },
         }
@@ -95,7 +95,7 @@ export default function Category() {
     formData.append("image", image);
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/catalog/addcategory`,
+        `/api/catalog/addcategory`,
         formData,
         {
           headers: {
@@ -135,7 +135,7 @@ export default function Category() {
   const fetchCategories = async () => {
     try {
       const resCategories = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/catalog/getItemcatalog`,
+        `/api/catalog/getItemcatalog`,
         {
           method: "GET",
           headers: {
