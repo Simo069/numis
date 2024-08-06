@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate",
-    "vercel-build":"prisma generate && prisma migrate && prisma build"
+    "vercel-build":"prisma generate && prisma migrate && next build"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.4.1",
