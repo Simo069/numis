@@ -1,0 +1,110 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./client"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Test {
+  id   Int    @id @default(autoincrement())
+  name String
+}
+
+// model User {
+//   id  Int @id @default(autoincrement())  
+//   email String @unique
+//   username String @unique
+//   firstname String  @default("test1")
+//   secondname String @default("test2")
+//   password String
+//   createdAt DateTime @default(now())
+//   updateUt  DateTime @updatedAt
+//   profile   String  @default("test3")
+// }
+enum Role {
+  CLIENT
+  ADMIN
+}
+
+model User {
+  id          Int          @id @default(autoincrement())
+  email       String       @unique
+  username    String       @unique
+  firstname   String       @default("")
+  secondname  String       @default("")
+  password    String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  profile     String       @default("/uploads/unknown.png")
+  role        Role         @default(CLIENT)
+  collections Collection[]
+}
+
+model Currency {
+  id         Int          @id @default(autoincrement())
+  title      String       @default("")
+  bank_name  String       @default("")
+  currency   String       @default("")
+  date_issue String       @default("")
+  image      String
+  currencies Currencies[]
+}
+
+model Currencies {
+  id                 Int          @id @default(autoincrement())
+  ref                String
+  title              String
+  imagefront         String
+  imageback          String
+  description        String
+  imagesignature     String? // Nullable field
+  nom_des_signataire String
+  currencyId         Int
+  currency           Currency     @relation(fields: [currencyId], references: [id])
+  value              String
+  issued_by          String
+  comments           String
+  variations         Variation[]
+  date               String?      @default("")
+  type               String?      @default("")
+  collections        Collection[]
+}
+
+model Variation {
+  id                 Int          @id @default(autoincrement())
+  ref                String
+  imagefront         String
+  imageback          String
+  description        String
+  imagesignature     String? // Nullable field
+  nom_des_signataire String
+  currenciesId       Int
+  currencies         Currencies   @relation(fields: [currenciesId], references: [id])
+  issued_by          String
+  comments           String
+  date               String?      @default("")
+  type               String?      @default("")
+  collections        Collection[]
+}
+
+model Collection {
+  id          Int         @id @default(autoincrement())
+  userId      Int
+  user        User        @relation(fields: [userId], references: [id])
+  currencyId  Int?
+  variationId Int?
+  currency    Currencies? @relation(fields: [currencyId], references: [id])
+  variation   Variation?  @relation(fields: [variationId], references: [id])
+  idCategory  Int?
+  dateAdded   DateTime    @default(now())
+}
