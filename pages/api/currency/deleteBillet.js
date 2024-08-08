@@ -39,7 +39,12 @@
 import db from "@/lib/db";
 import fs from 'fs/promises';
 import path from 'path';
-
+import { v2 as cloudinary } from 'cloudinary';
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 export default async function handler(req, res) {
   if (req.method !== "DELETE") {
     return res.status(405).json({ message: "Method Not Allowed" });
@@ -48,14 +53,31 @@ export default async function handler(req, res) {
   console.log("idBillet--::", idBillet);
   console.log("isVariation--::", isVariation);
 
-  async function deleteImage(imagePath) {
-    if (imagePath) {
-      const fullPath = path.join(process.cwd(), 'public', imagePath);
+  // async function deleteImage(imagePath) {
+  //   if (imagePath) {
+  //     const fullPath = path.join(process.cwd(), 'public', imagePath);
+  //     try {
+  //       await fs.unlink(fullPath);
+  //       console.log(`Deleted image: ${fullPath}`);
+  //     } catch (error) {
+  //       console.error(`Failed to delete image: ${fullPath}`, error);
+  //     }
+  //   }
+  // }
+  async function deleteImage(imageUrl) {
+    if (imageUrl) {
+      // Extract the public ID from the image URL
+      const publicId = imageUrl.split('/').pop().split('.')[0];
+      
       try {
-        await fs.unlink(fullPath);
-        console.log(`Deleted image: ${fullPath}`);
+        const result = await cloudinary.uploader.destroy(publicId);
+        if (result.result === 'ok') {
+          console.log(`Deleted image from Cloudinary: ${publicId}`);
+        } else {
+          console.error(`Failed to delete image from Cloudinary: ${publicId}`, result);
+        }
       } catch (error) {
-        console.error(`Failed to delete image: ${fullPath}`, error);
+        console.error(`Error deleting image from Cloudinary: ${publicId}`, error);
       }
     }
   }

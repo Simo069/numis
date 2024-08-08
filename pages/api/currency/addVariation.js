@@ -140,12 +140,19 @@ import { IncomingForm } from "formidable";
 import fs from "fs/promises";
 import path from "path";
 import db from "@/lib/db";
+import { v2 as cloudinary } from 'cloudinary';
 
 export const config = {
   api: {
     bodyParser: false,
   },
 };
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -166,28 +173,44 @@ export default async function handler(req, res) {
 
     const { id_currencies } = fields;
 
+    // const saveImage = async (file) => {
+    //   if (!file || !file.filepath) {
+    //     console.log("No file provided");
+    //     return null;
+    //   }
+
+    //   const oldPath = file.filepath;
+    //   const uploadDir = path.join(process.cwd(), "public", "uploads");
+    //   const fileExtension = path.extname(file.originalFilename || "");
+    //   const fileName = `${Date.now()}-${Math.round(Math.random() * 1e9)}${fileExtension}`;
+    //   const newPath = path.join(uploadDir, fileName);
+
+    //   try {
+    //     await fs.copyFile(oldPath, newPath);
+    //     console.log("File saved successfully:", newPath);
+    //     return `/uploads/${fileName}`;
+    //   } catch (error) {
+    //     console.error("Error saving file:", error);
+    //     return null;
+    //   }
+    // };
     const saveImage = async (file) => {
       if (!file || !file.filepath) {
         console.log("No file provided");
         return null;
       }
 
-      const oldPath = file.filepath;
-      const uploadDir = path.join(process.cwd(), "public", "uploads");
-      const fileExtension = path.extname(file.originalFilename || "");
-      const fileName = `${Date.now()}-${Math.round(Math.random() * 1e9)}${fileExtension}`;
-      const newPath = path.join(uploadDir, fileName);
-
       try {
-        await fs.copyFile(oldPath, newPath);
-        console.log("File saved successfully:", newPath);
-        return `/uploads/${fileName}`;
+        const result = await cloudinary.uploader.upload(file.filepath, {
+          folder: "uploads",
+        });
+        console.log(`File uploaded successfully at ${result.secure_url}`);
+        return result.secure_url;
       } catch (error) {
-        console.error("Error saving file:", error);
+        console.error("Error uploading file to Cloudinary:", error);
         return null;
       }
     };
-
     try {
       const parsedVariations = [];
       for (let i = 0; i < Object.keys(fields).length; i++) {

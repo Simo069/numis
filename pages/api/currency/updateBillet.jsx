@@ -2,11 +2,19 @@ import { IncomingForm } from "formidable";
 import fs from "fs/promises";
 import path from "path";
 import db from "@/lib/db";
+import { v2 as cloudinary } from 'cloudinary';
+
 export const config = {
   api: {
     bodyParser: false,
   },
 };
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
 
 export default function handler(req, res) {
   if (req.method !== "PUT") {
@@ -55,37 +63,57 @@ export default function handler(req, res) {
       console.log("date", date);
       console.log("type", type);
 
+      // const saveImage = async (file) => {
+      //   if (!file || !file.filepath) {
+      //     console.log("No file provided");
+      //     return null;
+      //   }
+      //   const oldPath = path.resolve(file.filepath);
+      //   const uploadDir = path.join(process.cwd(), "public", "uploads");
+      //   const fileExtension = path.extname(file.originalFilename || "");
+      //   const fileName = `${Date.now()}-${Math.round(
+      //     Math.random() * 1e9
+      //   )}${fileExtension}`;
+      //   const newPath = path.join(uploadDir, fileName);
+      //   console.log("Old path:", oldPath);
+      //   console.log("New path:", newPath);
+      //   try {
+      //     // Vérifiez si le fichier source existe
+      //     await fs.access(oldPath);
+      //     // Utilisez copyFile et unlink au lieu de rename
+      //     await fs.copyFile(oldPath, newPath);
+      //     try {
+      //       await fs.unlink(oldPath);
+      //     } catch (unlinkError) {
+      //       console.warn(
+      //         "Warning: Could not delete temporary file:",
+      //         unlinkError
+      //       );
+      //     }
+      //     console.log("File saved successfully");
+      //     return `/uploads/${fileName}`;
+      //   } catch (error) {
+      //     console.error("Error saving file:", error);
+      //     return null;
+      //   }
+      // };
       const saveImage = async (file) => {
         if (!file || !file.filepath) {
           console.log("No file provided");
           return null;
         }
-        const oldPath = path.resolve(file.filepath);
-        const uploadDir = path.join(process.cwd(), "public", "uploads");
-        const fileExtension = path.extname(file.originalFilename || "");
-        const fileName = `${Date.now()}-${Math.round(
-          Math.random() * 1e9
-        )}${fileExtension}`;
-        const newPath = path.join(uploadDir, fileName);
-        console.log("Old path:", oldPath);
-        console.log("New path:", newPath);
+      
         try {
-          // Vérifiez si le fichier source existe
-          await fs.access(oldPath);
-          // Utilisez copyFile et unlink au lieu de rename
-          await fs.copyFile(oldPath, newPath);
-          try {
-            await fs.unlink(oldPath);
-          } catch (unlinkError) {
-            console.warn(
-              "Warning: Could not delete temporary file:",
-              unlinkError
-            );
-          }
-          console.log("File saved successfully");
-          return `/uploads/${fileName}`;
+          // Upload the image to Cloudinary
+          const result = await cloudinary.uploader.upload(file.filepath, {
+            folder: "uploads", // Optional: specify a folder in Cloudinary
+          });
+          
+          // Return the URL of the uploaded image
+          console.log("File uploaded successfully:", result.secure_url);
+          return result.secure_url;
         } catch (error) {
-          console.error("Error saving file:", error);
+          console.error("Error uploading file to Cloudinary:", error);
           return null;
         }
       };

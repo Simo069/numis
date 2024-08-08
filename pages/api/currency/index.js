@@ -4,6 +4,12 @@ import fs from "fs/promises";
 import path from "path";
 import { PrismaClient } from "@prisma/client";
 import db from "@/lib/db";
+import { v2 as cloudinary } from 'cloudinary';
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 export const config = {
   api: {
     bodyParser: false,
@@ -41,37 +47,54 @@ export default async function handler(req, res) {
       date,
       type
     } = fields;
+    // const saveImage = async (file) => {
+    //   if (!file || !file.filepath) {
+    //     console.log("No file provided");
+    //     return null;
+    //   }
+    //   const oldPath = path.resolve(file.filepath);
+    //   const uploadDir = path.join(process.cwd(), "public", "uploads");
+    //   const fileExtension = path.extname(file.originalFilename || "");
+    //   const fileName = `${Date.now()}-${Math.round(
+    //     Math.random() * 1e9
+    //   )}${fileExtension}`;
+    //   const newPath = path.join(uploadDir, fileName);
+    //   console.log("Old path:", oldPath);
+    //   console.log("New path:", newPath);
+    //   try {
+    //     // Vérifiez si le fichier source existe
+    //     await fs.access(oldPath);
+    //     // Utilisez copyFile et unlink au lieu de rename
+    //     await fs.copyFile(oldPath, newPath);
+    //     try {
+    //       await fs.unlink(oldPath);
+    //     } catch (unlinkError) {
+    //       console.warn(
+    //         "Warning: Could not delete temporary file:",
+    //         unlinkError
+    //       );
+    //     }
+    //     console.log("File saved successfully");
+    //     return `/uploads/${fileName}`;
+    //   } catch (error) {
+    //     console.error("Error saving file:", error);
+    //     return null;
+    //   }
+    // };
     const saveImage = async (file) => {
       if (!file || !file.filepath) {
         console.log("No file provided");
         return null;
       }
-      const oldPath = path.resolve(file.filepath);
-      const uploadDir = path.join(process.cwd(), "public", "uploads");
-      const fileExtension = path.extname(file.originalFilename || "");
-      const fileName = `${Date.now()}-${Math.round(
-        Math.random() * 1e9
-      )}${fileExtension}`;
-      const newPath = path.join(uploadDir, fileName);
-      console.log("Old path:", oldPath);
-      console.log("New path:", newPath);
+
       try {
-        // Vérifiez si le fichier source existe
-        await fs.access(oldPath);
-        // Utilisez copyFile et unlink au lieu de rename
-        await fs.copyFile(oldPath, newPath);
-        try {
-          await fs.unlink(oldPath);
-        } catch (unlinkError) {
-          console.warn(
-            "Warning: Could not delete temporary file:",
-            unlinkError
-          );
-        }
-        console.log("File saved successfully");
-        return `/uploads/${fileName}`;
+        const result = await cloudinary.uploader.upload(file.filepath, {
+          folder: "uploads",
+        });
+        console.log(`File uploaded successfully at ${result.secure_url}`);
+        return result.secure_url;
       } catch (error) {
-        console.error("Error saving file:", error);
+        console.error("Error uploading file to Cloudinary:", error);
         return null;
       }
     };
