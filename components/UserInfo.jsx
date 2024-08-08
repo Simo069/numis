@@ -5,7 +5,7 @@ import Modal from "./Modal";
 import { useSession } from "next-auth/react";
 import axios from "axios";
 
-export default function UserInfo() {
+export default function  UserInfo() {
   const { data: session, status } = useSession();
   const [user, setUser] = useState({});
   const [id, setId] = useState(null);
