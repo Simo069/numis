@@ -131,6 +131,7 @@ export default function handler(req, res) {
       }
     };
 
+    
     try {
       let updateData = {
         firstname: firstname[0],

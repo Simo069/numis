@@ -76,13 +76,11 @@
 
 
 
-import db from "@/lib/db";
-import { IncomingForm } from 'formidable';
-import fs from 'fs';
-import path from 'path';
-import { v2 as cloudinary } from 'cloudinary';
 
-// Configure Cloudinary with environment variables
+import { v2 as cloudinary } from 'cloudinary';
+import { IncomingForm } from 'formidable';
+import db from "@/lib/db";
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -96,57 +94,55 @@ export const config = {
 };
 
 export default async function handler(req, res) {
-  if (req.method === 'POST') {
-    const form = new IncomingForm();
-    form.uploadDir = "./public/uploads";
-    form.keepExtensions = true;
+  if (req.method !== 'POST') {
+    return res.status(405).json({ message: "Method Not Allowed" });
+  }
 
-    form.parse(req, async (err, fields, files) => {
-      if (err) {
-        console.error("Error parsing form:", err);
-        return res.status(500).json({ error: 'Error parsing form data' });
+  const form = new IncomingForm({ keepExtensions: true });
+
+  form.parse(req, async (err, fields, files) => {
+    if (err) {
+      console.error("Error parsing form:", err);
+      return res.status(500).json({ error: 'Error parsing form data' });
+    }
+
+    const { title, bankName, currency, dateIssue } = fields;
+
+    const uploadImageToCloudinary = async (file) => {
+      if (!file || !file.filepath) {
+        console.log("No file provided");
+        return null;
       }
-
-      const { title, bankName, currency, dateIssue } = fields;
-      const image = files.image;
-
-      if (!image || !image[0]) {
-        console.error("No image file uploaded");
-        return res.status(400).json({ error: 'No image file uploaded' });
-      }
-
-      const file = image[0];
-      const oldPath = file.filepath;
 
       try {
-        // Upload the file to Cloudinary
-        const result = await cloudinary.uploader.upload(oldPath, {
-          folder: "uploads", // optional, specify folder in Cloudinary
-          public_id: path.basename(file.originalFilename, path.extname(file.originalFilename)),
+        const result = await cloudinary.uploader.upload(file.filepath, {
+          folder: "uploads",
         });
-
-        // Save the currency entry with the Cloudinary URL
-        const newCurrency = await db.currency.create({
-          data: {
-            title: title[0],
-            bank_name: bankName[0],
-            currency: currency[0],
-            date_issue: dateIssue[0],
-            image: result.secure_url, // Use Cloudinary's secure URL
-          },
-        });
-
-        // Clean up local file after upload
-        fs.unlinkSync(oldPath);
-
-        res.status(201).json(newCurrency);
+        console.log(`File uploaded successfully at ${result.secure_url}`);
+        return result.secure_url;
       } catch (error) {
-        console.error("Error creating currency entry:", error);
-        res.status(500).json({ error: 'Error creating currency entry' });
+        console.error("Error uploading file to Cloudinary:", error);
+        return null;
       }
-    });
-  } else {
-    res.setHeader('Allow', ['POST']);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
-  }
+    };
+
+    try {
+      const imageUrl = await uploadImageToCloudinary(files.image[0]);
+
+      const newCurrency = await db.currency.create({
+        data: {
+          title: title[0],
+          bank_name: bankName[0],
+          currency: currency[0],
+          date_issue: dateIssue[0],
+          image: imageUrl,
+        },
+      });
+
+      res.status(201).json(newCurrency);
+    } catch (error) {
+      console.error("Error creating currency entry:", error);
+      res.status(500).json({ error: 'Error creating currency entry' });
+    }
+  });
 }
