@@ -129,19 +129,36 @@ export default function handler(req, res) {
 
     const { id, title, bank_name, date_issue, currency } = fields;
 
+    // const saveImageToCloudinary = async (file) => {
+    //   if (!file || !file.filepath) {
+    //     console.log("No file provided");
+    //     return null;
+    //   }
+      
+    //   try {
+    //     const result = await cloudinary.uploader.upload(file.filepath, {
+    //       folder: "uploads", // You can specify a folder in your Cloudinary account
+    //       public_id: `temp_${Date.now()}`,
+    //       resource_type: "image",
+    //     });
+    //     console.log("File uploaded successfully to Cloudinary:", result.secure_url);
+    //     return result.secure_url;
+    //   } catch (error) {
+    //     console.error("Error uploading file to Cloudinary:", error);
+    //     return null;
+    //   }
+    // };
     const saveImageToCloudinary = async (file) => {
       if (!file || !file.filepath) {
         console.log("No file provided");
         return null;
       }
-      
+
       try {
         const result = await cloudinary.uploader.upload(file.filepath, {
-          folder: "uploads", // You can specify a folder in your Cloudinary account
-          public_id: `temp_${Date.now()}`,
-          resource_type: "image",
+          folder: "uploads",
         });
-        console.log("File uploaded successfully to Cloudinary:", result.secure_url);
+        console.log(`File uploaded successfully at ${result.secure_url}`);
         return result.secure_url;
       } catch (error) {
         console.error("Error uploading file to Cloudinary:", error);
