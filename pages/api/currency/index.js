@@ -179,8 +179,6 @@
 // }
 
 import { IncomingForm } from "formidable";
-import fs from "fs/promises";
-import path from "path";
 import { v2 as cloudinary } from 'cloudinary';
 import db from "@/lib/db";
 
@@ -203,7 +201,6 @@ export default async function handler(req, res) {
   }
 
   const form = new IncomingForm({
-    uploadDir: path.join(process.cwd(), "public", "uploads"),
     keepExtensions: true,
     filename: (name, ext, part, form) => `temp_${Date.now()}${ext}`,
   });
@@ -228,7 +225,7 @@ export default async function handler(req, res) {
       type
     } = fields;
 
-    const saveImage = async (file) => {
+    const uploadImageToCloudinary = async (file) => {
       if (!file || !file.filepath) {
         console.log("No file provided");
         return null;
@@ -248,9 +245,9 @@ export default async function handler(req, res) {
     try {
       const [imageFrontPath, imageBackPath, imageSignaturePath] =
         await Promise.all([
-          saveImage(files.imagefront ? files.imagefront[0] : null),
-          saveImage(files.imageback ? files.imageback[0] : null),
-          saveImage(files.imagesignature ? files.imagesignature[0] : null),
+          uploadImageToCloudinary(files.imagefront ? files.imagefront[0] : null),
+          uploadImageToCloudinary(files.imageback ? files.imageback[0] : null),
+          uploadImageToCloudinary(files.imagesignature ? files.imagesignature[0] : null),
         ]);
 
       if (!imageFrontPath || !imageBackPath) {
@@ -296,9 +293,9 @@ export default async function handler(req, res) {
       }
 
       for (const variation of parsedVariations) {
-        const variationImageFrontPath = await saveImage(variation.imageFront);
-        const variationImageBackPath = await saveImage(variation.imageBack);
-        const variationImageSignaturePath = await saveImage(variation.imageSignature);
+        const variationImageFrontPath = await uploadImageToCloudinary(variation.imageFront);
+        const variationImageBackPath = await uploadImageToCloudinary(variation.imageBack);
+        const variationImageSignaturePath = await uploadImageToCloudinary(variation.imageSignature);
 
         await db.variation.create({
           data: {
