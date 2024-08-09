@@ -162,6 +162,7 @@
   
 // }
 
+
 import { IncomingForm } from "formidable";
 import { v2 as cloudinary } from 'cloudinary';
 import db from "@/lib/db";
@@ -183,6 +184,8 @@ export default function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
+  console.log("Starting form parsing...");
+
   const form = new IncomingForm({
     keepExtensions: true,
     multiples: true,
@@ -193,6 +196,10 @@ export default function handler(req, res) {
       console.error("Error parsing form updating billet:", err);
       return res.status(500).json({ error: "Error parsing form data" });
     }
+
+    console.log("Form parsed successfully");
+    console.log("Fields:", fields);
+    console.log("Files:", files);
 
     const {
       ref,
@@ -209,12 +216,13 @@ export default function handler(req, res) {
       isvariation,
     } = fields;
 
-    console.log("Parsed fields:", fields);
-    console.log("Parsed files:", files);
+    if (!ref || !id || !nom_des_signataire || !date || !type) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
 
     const saveImage = async (file) => {
       if (!file || !file.filepath) {
-        console.log("No file provided for upload");
+        console.log("No file provided for upload or file path is missing.");
         return null;
       }
 
@@ -241,17 +249,22 @@ export default function handler(req, res) {
         type: type[0],
       };
 
-      if (files.imagefront) {
+      if (files.imagefront && files.imagefront[0]) {
         console.log("Uploading imagefront...");
-        updateData.imagefront = await saveImage(files.imagefront[0]);
+        const imagefrontUrl = await saveImage(files.imagefront[0]);
+        if (imagefrontUrl) updateData.imagefront = imagefrontUrl;
       }
-      if (files.imageback) {
+
+      if (files.imageback && files.imageback[0]) {
         console.log("Uploading imageback...");
-        updateData.imageback = await saveImage(files.imageback[0]);
+        const imagebackUrl = await saveImage(files.imageback[0]);
+        if (imagebackUrl) updateData.imageback = imagebackUrl;
       }
-      if (files.imagesignature) {
+
+      if (files.imagesignature && files.imagesignature[0]) {
         console.log("Uploading imagesignature...");
-        updateData.imagesignature = await saveImage(files.imagesignature[0]);
+        const imagesignatureUrl = await saveImage(files.imagesignature[0]);
+        if (imagesignatureUrl) updateData.imagesignature = imagesignatureUrl;
       }
 
       if (isvariation === "false") {
