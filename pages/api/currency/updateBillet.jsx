@@ -335,7 +335,7 @@ export default async function handler(req, res) {
     } = fields;
 
     const saveImage = async (file) => {
-      if (!file) {
+      if (!file || !file.filepath) {
         console.log("No file provided");
         return null;
       }
@@ -353,37 +353,37 @@ export default async function handler(req, res) {
     };
 
     let updateData = {
-      ref: ref,
-      description: description,
-      nom_des_signataire: nom_des_signataire,
-      issued_by: issued_by,
-      comments: comments,
-      date: date,
-      type: type,
+      ref: ref[0],
+      description: description[0],
+      nom_des_signataire: nom_des_signataire[0],
+      issued_by: issued_by[0],
+      comments: comments[0],
+      date: date[0],
+      type: type[0],
     };
 
-    if (files.imagefront) {
-      updateData.imagefront = await saveImage(files.imagefront);
+    if (files.imagefront && files.imagefront[0]) {
+      updateData.imagefront = await saveImage(files.imagefront[0]);
     }
-    if (files.imageback) {
-      updateData.imageback = await saveImage(files.imageback);
+    if (files.imageback && files.imageback[0]) {
+      updateData.imageback = await saveImage(files.imageback[0]);
     }
-    if (files.imagesignature) {
-      updateData.imagesignature = await saveImage(files.imagesignature);
+    if (files.imagesignature && files.imagesignature[0]) {
+      updateData.imagesignature = await saveImage(files.imagesignature[0]);
     }
 
-    if (isvariation === "false") {
-      updateData.title = title;
-      updateData.value = value;
-      updateData.currencyId = parseInt(currencyId);
+    if (isvariation[0] === "false") {
+      updateData.title = title[0];
+      updateData.value = value[0];
+      updateData.currencyId = parseInt(currencyId[0]);
       const updatedCurrency = await db.currencies.update({
-        where: { id: parseInt(id) },
+        where: { id: parseInt(id[0]) },
         data: updateData,
       });
       res.status(200).json(updatedCurrency);
     } else {
       const updatedVariation = await db.variation.update({
-        where: { id: parseInt(id) },
+        where: { id: parseInt(id[0]) },
         data: updateData,
       });
       res.status(200).json(updatedVariation);
