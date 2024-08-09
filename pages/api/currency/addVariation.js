@@ -136,11 +136,17 @@
 //   });
 // }
 
+
 import { IncomingForm } from "formidable";
-import fs from "fs/promises";
-import path from "path";
-import db from "@/lib/db";
 import { v2 as cloudinary } from 'cloudinary';
+import db from "@/lib/db";
+
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 export const config = {
   api: {
@@ -148,21 +154,14 @@ export const config = {
   },
 };
 
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
   const form = new IncomingForm({
-    uploadDir: path.join(process.cwd(), "public", "uploads"),
-    keepExtensions: true,
     multiples: true,
+    keepExtensions: true,
   });
 
   form.parse(req, async (err, fields, files) => {
@@ -173,28 +172,7 @@ export default async function handler(req, res) {
 
     const { id_currencies } = fields;
 
-    // const saveImage = async (file) => {
-    //   if (!file || !file.filepath) {
-    //     console.log("No file provided");
-    //     return null;
-    //   }
-
-    //   const oldPath = file.filepath;
-    //   const uploadDir = path.join(process.cwd(), "public", "uploads");
-    //   const fileExtension = path.extname(file.originalFilename || "");
-    //   const fileName = `${Date.now()}-${Math.round(Math.random() * 1e9)}${fileExtension}`;
-    //   const newPath = path.join(uploadDir, fileName);
-
-    //   try {
-    //     await fs.copyFile(oldPath, newPath);
-    //     console.log("File saved successfully:", newPath);
-    //     return `/uploads/${fileName}`;
-    //   } catch (error) {
-    //     console.error("Error saving file:", error);
-    //     return null;
-    //   }
-    // };
-    const saveImage = async (file) => {
+    const uploadImageToCloudinary = async (file) => {
       if (!file || !file.filepath) {
         console.log("No file provided");
         return null;
@@ -211,6 +189,7 @@ export default async function handler(req, res) {
         return null;
       }
     };
+
     try {
       const parsedVariations = [];
       for (let i = 0; i < Object.keys(fields).length; i++) {
@@ -234,9 +213,9 @@ export default async function handler(req, res) {
 
       for (const variation of parsedVariations) {
         try {
-          const variationImageFrontPath = await saveImage(variation.imageFront[0]);
-          const variationImageBackPath = await saveImage(variation.imageBack[0]);
-          const variationImageSignaturePath = variation.imageSignature ? await saveImage(variation.imageSignature[0]) : null;
+          const variationImageFrontPath = await uploadImageToCloudinary(variation.imageFront[0]);
+          const variationImageBackPath = await uploadImageToCloudinary(variation.imageBack[0]);
+          const variationImageSignaturePath = variation.imageSignature ? await uploadImageToCloudinary(variation.imageSignature[0]) : null;
 
           console.log("Image paths:", {
             front: variationImageFrontPath,
