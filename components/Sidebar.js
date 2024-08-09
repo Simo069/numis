@@ -215,7 +215,7 @@ const Sidebar = forwardRef(({ isSidebarOpen, toggleSidebar }, ref) => {
             </Link>
           </li>
           {session &&
-          session?.user?.email === "boukhatemmohammed15@gmail.com" ? (
+          (session?.user?.email === "boukhatemmohammed15@gmail.com" || session?.user?.email === "admin@example.com") ? (
             <li
               className={`px-6 py-3 hover:scale-105 ${getLinkClass(
                 "/dashboard/admins"
