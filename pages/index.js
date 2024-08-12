@@ -49,7 +49,7 @@ export default function Home() {
           <div className="col-span-1 w-full flex justify-center px-8 sm:px-16 md:px-0 mt-32 lg:mx-0 lg:mt-20 h-fit">
             <div className="md:max-w-xl">
               <img
-                src="/one.png"
+                src="/Billet_20_recto.png"
                 className=" md:min-w-96 md:min-h-96 object-cover lg:w-52 left-56 -top-20 select-none"
                 alt="yours image"
               />
