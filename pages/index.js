@@ -47,13 +47,20 @@ export default function Home() {
             </div>
           </div>
           <div className="col-span-1 w-full flex justify-center px-8 sm:px-16 md:px-0 mt-32 lg:mx-0 lg:mt-20 h-fit">
-            <div className="md:max-w-xl">
+            <div className="md:max-w-xl ">
               <img
-                src="/Billet_20_recto.png"
-                className=" md:min-w-96 md:min-h-96 object-cover lg:w-52 left-56 -top-20 select-none"
+                src="/tarik.jpeg"
+                className=" md:min-w-[400px] md:min-h-[400px] object-cover lg:w-52 left-56 -top-20 select-none rounded-lg"
                 alt="yours image"
               />
             </div>
+            {/* <div className="lg:w-1/2 lg:ml-8 ">
+            <img
+              src="/tarik.jpeg"
+              alt="test"
+              className="rounded-lg shadow-lg w-full object-cover "
+            />
+          </div> */}
           </div>
         </MaxWidthWrapper>
         <Sections

@@ -9,7 +9,10 @@ export default async function handler(req, res) {
     }
     try {
       const variations = await db.variation.findMany({
-        where : { currenciesId : parseInt(id)}
+        where : { currenciesId : parseInt(id)},
+        orderBy : {
+          id:'asc'
+        }
       })
       res.status(200).json(variations);
     } catch (error) {

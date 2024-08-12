@@ -320,6 +320,27 @@ export default function Collection() {
     }
   };
 
+  // const groupCollectionByCategory = (collection) => {
+  //   const grouped = collection.reduce((acc, item) => {
+  //     const currency = item.currency || item.variation.currencies;
+  //     const categoryId = currency.currency.id;
+  //     const categoryTitle = currency.currency.title;
+  //     const categoryDate = currency.currency.date_issue;
+      
+  //     if (!acc[categoryId]) {
+  //       acc[categoryId] = {
+  //         title: categoryTitle,
+  //         date_issue : categoryDate,
+  //         items: []
+  //       };
+  //     }
+      
+  //     acc[categoryId].items.push(item);
+  //     return acc;
+  //   }, {});
+
+  //   setGroupedCollection(grouped);
+  // };
   const groupCollectionByCategory = (collection) => {
     const grouped = collection.reduce((acc, item) => {
       const currency = item.currency || item.variation.currencies;
@@ -330,15 +351,25 @@ export default function Collection() {
       if (!acc[categoryId]) {
         acc[categoryId] = {
           title: categoryTitle,
-          date_issue : categoryDate,
+          date_issue: categoryDate,
           items: []
         };
       }
       
-      acc[categoryId].items.push(item);
+      const existingItem = acc[categoryId].items.find(i => i.id === currency.id);
+      if (existingItem) {
+        existingItem.count += 1;
+      } else {
+        acc[categoryId].items.push({
+          ...currency,
+          count: 1,
+          totalVariations: currency.variations.length + 1
+        });
+      }
+      
       return acc;
     }, {});
-
+  
     setGroupedCollection(grouped);
   };
 
@@ -370,7 +401,7 @@ export default function Collection() {
             </h2>
           </div>
           
-          {Object.entries(groupedCollection).map(([categoryId, category]) => (
+          {/* {Object.entries(groupedCollection).map(([categoryId, category]) => (
             <div key={categoryId} className="mb-12">
               <h3 className=" flex items-center gap-5 text-2xl font-bold mb-4"> {category.title}--- <span className="font-semibold text-sm">{category.date_issue}</span></h3>
               <div className="flex flex-col gap-8 justify-center items-center">
@@ -430,7 +461,62 @@ export default function Collection() {
                 })}
               </div>
             </div>
-          ))}
+          ))} */}
+          {Object.entries(groupedCollection).map(([categoryId, category]) => (
+  <div key={categoryId} className="mb-12">
+    <h3 className="flex items-center gap-5 text-2xl font-bold mb-4">
+      {category.title} <span className="font-semibold text-sm">{category.date_issue}</span>
+    </h3>
+    <div className="flex flex-col gap-8 justify-center items-center">
+      {category.items.map((item, index) => (
+        <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl cursor-pointer w-full">
+          <Link href={`/catalog/${encodeURIComponent(item.currency.title)}/${encodeURIComponent(item.title)}?id=${item.currency.id}&billet=${item.id}`}>
+            <div className="bg-white flex flex-col sm:flex-row rounded-lg shadow-lg overflow-hidden">
+              <div className="flex-shrink-0 flex sm:flex-col">
+                <div className="overflow-hidden w-28 h-20 sm:w-56 sm:h-24 flex-shrink-0 p-1">
+                  <Image
+                    src={item.imagefront}
+                    alt={item.title}
+                    width={224}
+                    height={96}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="overflow-hidden w-28 h-20 sm:w-56 sm:h-24 flex-shrink-0 p-1">
+                  <Image
+                    src={item.imageback}
+                    alt={item.title}
+                    width={224}
+                    height={96}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+              <div className="p-3 flex flex-col flex-1 sm:min-w-[300px] lg:min-w-[500px]">
+                <div className="flex flex-col items-start">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                    {item.title}
+                  </h3>
+                  <h4 className="text-sm text-gray-700 mb-2">
+                    {item.date}
+                  </h4>
+                  <h4 className="text-lg text-gray-700 mb-2 flex flex-row gap-2">
+                    #{item.ref}
+                  </h4>
+                </div>
+                <div className="justify-center text-center mt-4">
+                  <div className="h-8 w-full sm:w-[300px] rounded-lg bg-green-300 text-center align-middle font-bold flex items-center justify-center">
+                    {item.count} / {item.totalVariations}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Link>
+        </div>
+      ))}
+    </div>
+  </div>
+))}
         </div>
       </div>
     </MaxWidthWrapper>

@@ -151,7 +151,6 @@ export default function BilletMonnaie() {
   const prevBill =
     currencies[(currentIndex === 0 ? currencies.length : currentIndex) - 1];
   const nextBill = currencies[(currentIndex + 1) % currencies.length];
-
   const isCurrencyNotEmpty = (currency?.id ?? null) !== null;
   const theSameCategory = currency?.currencyId === currencies[0]?.currencyId;
 

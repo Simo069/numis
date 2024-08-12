@@ -104,7 +104,6 @@ export default function riff() {
                     let userCollectionsCount = 0;
                     let count=0;
                     let totalCount= 0;
-
                     if(session  && status === "authenticated"){
                       totalvariation = billet.variations.length + 1
                       userCollectionsCount = userCollection.filter((item)=> item.currencyId== billet.id || item.variationId== billet.id).length;
