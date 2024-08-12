@@ -47,15 +47,12 @@ export default function currencies() {
   );
   const fetchItemsCatalog = async () => {
     try {
-      const resCategories = await fetch(
-        `/api/catalog/getItemcatalog`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const resCategories = await fetch(`/api/catalog/getItemcatalog`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       const responseCategories = await resCategories.json();
       setCategories(responseCategories);
     } catch (error) {
@@ -202,14 +199,12 @@ export default function currencies() {
   }, []);
   const fetchAllBillet = async () => {
     try {
-      const resBillet = await axios.get(
-        `/api/currency/getAllBillet`
-      );
+      const resBillet = await axios.get(`/api/currency/getAllBillet`);
 
       if (resBillet) {
         setCurrencies(resBillet.data);
       }
-      console.log("resBillet---",resBillet)
+      console.log("resBillet---", resBillet);
     } catch (error) {
       console.log("Error fetching All Billet: ", error);
     }
@@ -250,15 +245,12 @@ export default function currencies() {
   const handleConfirmDelete = async () => {
     console.log("item to delete ::", itemToDelete);
     try {
-      const resDelete = await axios.delete(
-        `/api/currency/deleteBillet`,
-        {
-          data: {
-            idBillet: itemToDelete.id,
-            isVariation: itemToDelete.isVariation,
-          },
-        }
-      );
+      const resDelete = await axios.delete(`/api/currency/deleteBillet`, {
+        data: {
+          idBillet: itemToDelete.id,
+          isVariation: itemToDelete.isVariation,
+        },
+      });
       if (resDelete.status === 200) {
         setState("success");
         setMessage("Billet deleted successfully from table currencies...");
@@ -354,10 +346,11 @@ export default function currencies() {
                 className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
                 <option value="">select categories</option>
-                {categories.map((categorie , index)=>(
-                  <option key={index} value={categorie.id}>{categorie.title}</option>
+                {categories.map((categorie, index) => (
+                  <option key={index} value={categorie.id}>
+                    {categorie.title}
+                  </option>
                 ))}
-              
               </select>
               <button
                 className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded shadow-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-300"
@@ -557,11 +550,17 @@ export default function currencies() {
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center py-8">
-              <img
+              {/* <img
                 src="/noresult.png"
                 alt="No results found"
                 className="w-72 h-72 mb-4"
-              />
+              /> */}
+              <div className="loader w-12 h-12 relative animate-spin988 text-center mx-auto mt-32 mb-8">
+                <div className="circle bg-gray-800 w-4 h-4 absolute rounded-full top-0 left-0"></div>
+                <div className="circle bg-gray-800 w-4 h-4 absolute rounded-full top-0 right-0"></div>
+                <div className="circle bg-gray-800 w-4 h-4 absolute rounded-full bottom-0 left-0"></div>
+                <div className="circle bg-gray-800 w-4 h-4 absolute rounded-full bottom-0 right-0"></div>
+              </div>
               <h2 className="text-xl font-semibold text-gray-800 mb-2">
                 No items found
               </h2>

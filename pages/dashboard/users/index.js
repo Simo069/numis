@@ -24,16 +24,11 @@ export default function users() {
   }, []);
   const fetchUsers = async () => {
     try {
-      const resUsers = await axios.get(
-        `/api/user/getUsers`
-      );
+      const resUsers = await axios.get(`/api/user/getUsers`);
       setUsers(resUsers.data);
       console.log("resUsers::", resUsers.data);
     } catch (error) {
-      console.error(
-        "error when fetching Users in dashboard admin ::",
-        error
-      );
+      console.error("error when fetching Users in dashboard admin ::", error);
     }
   };
   return (
@@ -41,9 +36,7 @@ export default function users() {
       <div className="card border-0 py-4 px-4 shadow-md rounded-lg h-[1000px] w-[700px] sm:w-[900px] md:w-[1400px]  lg:w-[1800px] overflow-scroll">
         <div className="w-full mx-auto mt-4"></div>{" "}
         <div className="mb-4 flex justify-between items-center overflow-scroll">
-          <h1 className="text-2xl font-semibold text-gray-800">
-            All Users
-          </h1>
+          <h1 className="text-2xl font-semibold text-gray-800">All Users</h1>
           <div className="flex gap-3">
             <input
               type="text"
@@ -169,11 +162,17 @@ export default function users() {
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center py-8">
-            <img
+            {/* <img
               src="/noresult.png"
               alt="No results found"
               className="w-72 h-72 mb-4"
-            />
+            /> */}
+            <div className="loader w-12 h-12 relative animate-spin988 text-center mx-auto mt-32 mb-8">
+              <div className="circle bg-gray-800 w-4 h-4 absolute rounded-full top-0 left-0"></div>
+              <div className="circle bg-gray-800 w-4 h-4 absolute rounded-full top-0 right-0"></div>
+              <div className="circle bg-gray-800 w-4 h-4 absolute rounded-full bottom-0 left-0"></div>
+              <div className="circle bg-gray-800 w-4 h-4 absolute rounded-full bottom-0 right-0"></div>
+            </div>
             <h2 className="text-xl font-semibold text-gray-800 mb-2">
               No items found
             </h2>

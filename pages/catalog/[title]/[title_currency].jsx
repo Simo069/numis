@@ -85,10 +85,9 @@ export default function BilletMonnaie() {
   }, [id, billet, state]);
   const fetchCurrenciesInfo = async (currencyId) => {
     try {
-      const response = await axios.post(
-        `/api/catalog/getCurrencies`,
-        { id: currencyId }
-      );
+      const response = await axios.post(`/api/catalog/getCurrencies`, {
+        id: currencyId,
+      });
       setCurrencies(response.data);
       if (response.data.length > 0) {
         const billetIndex = response.data.findIndex(
@@ -102,10 +101,9 @@ export default function BilletMonnaie() {
   };
   const fetchCurrencyInfo = async (currencyId) => {
     try {
-      const response = await axios.post(
-        `/api/currency/getCurrenciesInfo`,
-        { id: currencyId }
-      );
+      const response = await axios.post(`/api/currency/getCurrenciesInfo`, {
+        id: currencyId,
+      });
       setCurrency(response.data);
     } catch (error) {
       console.error("Error fetching one of currencies data:", error);
@@ -115,10 +113,9 @@ export default function BilletMonnaie() {
 
   const fetchVariationsInfo = async (currencyId) => {
     try {
-      const response = await axios.post(
-        `/api/currency/getVariationsInfo`,
-        { id: currencyId }
-      );
+      const response = await axios.post(`/api/currency/getVariationsInfo`, {
+        id: currencyId,
+      });
       setVariations(response.data);
     } catch (error) {
       console.error("Error fetching variations data:", error);
@@ -197,9 +194,7 @@ export default function BilletMonnaie() {
 
   const fetchUserCollection = async (userId) => {
     try {
-      const res = await axios.get(
-        `/api/collection/${userId}`
-      );
+      const res = await axios.get(`/api/collection/${userId}`);
       setUserCollections(res.data);
     } catch (error) {
       console.error("Error fetching user collection:", error);
@@ -307,7 +302,7 @@ export default function BilletMonnaie() {
                     </h3>
                     <img
                       src={currency.imagesignature}
-                      className="w-[300px] object-cover cursor-pointer" 
+                      className="w-[300px] object-cover cursor-pointer"
                       alt="Signature"
                       onClick={() => setSelectedImage(currency.imagesignature)}
                     />
@@ -530,14 +525,18 @@ export default function BilletMonnaie() {
           </MaxWidthWrapper>
         </>
       ) : (
-        <>
-          <div className="text-center align-middle max-w-7xl  mx-auto px-4 sm:px-6 lg.px-8 ">
-            <img
-              src="/noresult2.png"
-              className="text-center align-middle max-w-7xl  mx-auto px-4 sm:px-6 lg.px-8 mt-8"
-            />
-          </div>
-        </>
+        // <div className="text-center align-middle max-w-7xl relative mx-auto px-4 sm:px-6 lg.px-8 ">
+        //   <img
+        //     src="/noresult2.png"
+        //     className="text-center align-middle max-w-7xl  mx-auto px-4 sm:px-6 lg.px-8 mt-8"
+        //   />
+        // </div>
+        <div className="loader w-12 h-12 relative animate-spin988 text-center mx-auto mt-32">
+          <div className="circle bg-gray-800 w-4 h-4 absolute rounded-full top-0 left-0"></div>
+          <div className="circle bg-gray-800 w-4 h-4 absolute rounded-full top-0 right-0"></div>
+          <div className="circle bg-gray-800 w-4 h-4 absolute rounded-full bottom-0 left-0"></div>
+          <div className="circle bg-gray-800 w-4 h-4 absolute rounded-full bottom-0 right-0"></div>
+        </div>
       )}
       <ConfirmationModal
         isOpen={isModalOpen}

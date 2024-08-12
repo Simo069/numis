@@ -153,11 +153,17 @@ export default function collections() {
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center py-8">
-            <img
+            {/* <img
               src="/noresult.png"
               alt="No results found"
               className="w-72 h-72 mb-4"
-            />
+            /> */}
+            <div className="loader w-12 h-12 relative animate-spin988 text-center mx-auto mt-32 mb-8">
+              <div className="circle bg-gray-800 w-4 h-4 absolute rounded-full top-0 left-0"></div>
+              <div className="circle bg-gray-800 w-4 h-4 absolute rounded-full top-0 right-0"></div>
+              <div className="circle bg-gray-800 w-4 h-4 absolute rounded-full bottom-0 left-0"></div>
+              <div className="circle bg-gray-800 w-4 h-4 absolute rounded-full bottom-0 right-0"></div>
+            </div>
             <h2 className="text-xl font-semibold text-gray-800 mb-2">
               No items found
             </h2>

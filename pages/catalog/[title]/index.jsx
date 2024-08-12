@@ -1,5 +1,3 @@
-
-
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import { RiFileFill } from "react-icons/ri";
 import { useInView } from "react-intersection-observer";
@@ -35,25 +33,21 @@ export default function riff() {
 
   const fetchuserCollection = async (userId) => {
     try {
-      const rescollection = await axios.get(
-        `/api/collection/${userId}`
-      );
+      const rescollection = await axios.get(`/api/collection/${userId}`);
       setUserCollection(rescollection.data);
-      console.log("rescollection::__",rescollection.data)
+      console.log("rescollection::__", rescollection.data);
     } catch (error) {
       console.error(error);
     }
   };
 
-  
   const fetchCurrencyItemInfo = async (currencyId) => {
     console.log("currencyId ::::::", currencyId);
     try {
       console.log("test ::::::");
-      const response = await axios.post(
-        `/api/catalog/getCurrencyItemInfo`,
-        { id: currencyId }
-      );
+      const response = await axios.post(`/api/catalog/getCurrencyItemInfo`, {
+        id: currencyId,
+      });
       setCurrencyItem(response.data);
     } catch (error) {
       console.error("Error fetching currency data:", error);
@@ -61,10 +55,9 @@ export default function riff() {
   };
   const fetchCurrenciesInfo = async (currencyId) => {
     try {
-      const response = await axios.post(
-        `/api/catalog/getCurrencies`,
-        { id: currencyId }
-      );
+      const response = await axios.post(`/api/catalog/getCurrencies`, {
+        id: currencyId,
+      });
       setCurrencies(response.data);
     } catch (error) {
       console.error("Error fetching currencies data:", error);
@@ -84,7 +77,7 @@ export default function riff() {
             <div className="text-center align-middle max-w-7xl  mx-auto px-4 sm:px-6 lg:px-8  text-wrap">
               <div className="text-center mb-16 flex flex-col items-center justify-center gap-y-2 ">
                 <h2 className=" scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0 text-wrap ">
-                  {currencyItem.title} 
+                  {currencyItem.title}
                 </h2>
                 <h3 className="scroll-m-20 text-xl font-semibold tracking-tight text-wrap">
                   {currencyItem.bank_name}
@@ -102,93 +95,102 @@ export default function riff() {
                   currencies.map((billet, index) => {
                     let totalvariation = 0;
                     let userCollectionsCount = 0;
-                    let count=0;
-                    let totalCount= 0;
-                    if(session  && status === "authenticated"){
-                      totalvariation = billet.variations.length + 1
-                      userCollectionsCount = userCollection.filter((item)=> item.currencyId== billet.id || item.variationId== billet.id).length;
-                      if(billet.variations.length >0){
+                    let count = 0;
+                    let totalCount = 0;
+                    if (session && status === "authenticated") {
+                      totalvariation = billet.variations.length + 1;
+                      userCollectionsCount = userCollection.filter(
+                        (item) =>
+                          item.currencyId == billet.id ||
+                          item.variationId == billet.id
+                      ).length;
+                      if (billet.variations.length > 0) {
                         const variations = billet.variations;
-                        variations.map((variation)=>{
-                          count += userCollection.filter((item)=>item.variationId== variation.id).length
-                        })
-                        
+                        variations.map((variation) => {
+                          count += userCollection.filter(
+                            (item) => item.variationId == variation.id
+                          ).length;
+                        });
                       }
-                      totalCount = count + userCollectionsCount
+                      totalCount = count + userCollectionsCount;
                     }
-                    
-                    return(
-                    <Link
-                      key={index}
-                      href={`/catalog/${encodeURIComponent(
-                        currencyItem.title
-                      )}/${encodeURIComponent(billet.title)}?id=${
-                        currencyItem.id
-                      }&billet=${billet.id}`}
-                    >
-                      <div
+
+                    return (
+                      <Link
                         key={index}
-                        className="bg-white flex flex-col sm:flex-row  rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl cursor-pointer text-wrap"
+                        href={`/catalog/${encodeURIComponent(
+                          currencyItem.title
+                        )}/${encodeURIComponent(billet.title)}?id=${
+                          currencyItem.id
+                        }&billet=${billet.id}`}
                       >
-                        <div className="flex-shrink-0 flex-col gap-y-3">
-                          <div className="overflow-hidden w-56 h-24 flex-shrink-0 my-2 mx-1">
-                            <Image
-                              src={billet.imagefront}
-                              alt={billet.title}
-                              width={80}
-                              height={80}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                          <div className="rounded overflow-hidden w-56 h-24  flex-shrink-0 my-2 mx-1">
-                            <Image
-                              src={billet.imageback}
-                              alt={billet.title}
-                              width={80}
-                              height={80}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                        </div>
-                        <div className="p-3 flex  flex-col  flex-1 sm:min-w-[500px] mx-8 mt-5">
-                          <div className="flex flex-col items-start">
-                            <h3 className="text-lg font-semibold text-gray-800 mb-2 w-[500px] text-wrap">
-                              {billet.title} 
-                            </h3>
-                            <h4 className="text-sm text-gray-700 mb-2">
-                              {billet.date}
-                            </h4>
-                            <h4 className="text-lg text-gray-700 mb-2 flex flex-row gap-2  ">
-                              {" "}
-                              
-                              #{billet.ref}
-                            </h4>
-                          </div>
-                          <div className=" justify-center text-center mt-4">
-                          {session && (
-                            <div className=" h-8  w-full  sm-w-[300px] rounded-lg bg-green-300  text-center align-middle font-bold">
-                              {" "}
-                                <>
-                                {totalCount} / {totalvariation}
-                                </>
-                              
+                        <div
+                          key={index}
+                          className="bg-white flex flex-col sm:flex-row  rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl cursor-pointer text-wrap"
+                        >
+                          <div className="flex-shrink-0 flex-col gap-y-3">
+                            <div className="overflow-hidden w-56 h-24 flex-shrink-0 my-2 mx-1">
+                              <Image
+                                src={billet.imagefront}
+                                alt={billet.title}
+                                width={80}
+                                height={80}
+                                className="w-full h-full object-cover"
+                              />
                             </div>
-                            )}
+                            <div className="rounded overflow-hidden w-56 h-24  flex-shrink-0 my-2 mx-1">
+                              <Image
+                                src={billet.imageback}
+                                alt={billet.title}
+                                width={80}
+                                height={80}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                          </div>
+                          <div className="p-3 flex  flex-col  flex-1 sm:min-w-[500px] mx-8 mt-5">
+                            <div className="flex flex-col items-start">
+                              <h3 className="text-lg font-semibold text-gray-800 mb-2 w-[500px] text-wrap">
+                                {billet.title}
+                              </h3>
+                              <h4 className="text-sm text-gray-700 mb-2">
+                                {billet.date}
+                              </h4>
+                              <h4 className="text-lg text-gray-700 mb-2 flex flex-row gap-2  ">
+                                {" "}
+                                #{billet.ref}
+                              </h4>
+                            </div>
+                            <div className=" justify-center text-center mt-4">
+                              {session && (
+                                <div className=" h-8  w-full  sm-w-[300px] rounded-lg bg-green-300  text-center align-middle font-bold">
+                                  {" "}
+                                  <>
+                                    {totalCount} / {totalvariation}
+                                  </>
+                                </div>
+                              )}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </Link>)}
-                  )
+                      </Link>
+                    );
+                  })
                 ) : (
-                  <div className="text-center align-middle max-w-7xl  mx-auto px-4 sm:px-6 lg.px-8 ">
-                    <img
-                      src="/noresult.png"
-                      className="text-center align-middle max-w-7xl  mx-auto px-4 sm:px-6 lg.px-8 mt-8"
-                    />
+                  // <div className="text-center align-middle max-w-7xl  mx-auto px-4 sm:px-6 lg.px-8 ">
+                  //   <img
+                  //     src="/noresult.png"
+                  //     className="text-center align-middle max-w-7xl  mx-auto px-4 sm:px-6 lg.px-8 mt-8"
+                  //   />
+                  // </div>
+                  <div className="loader w-12 h-12 relative animate-spin988">
+                      <div className="circle bg-gray-800 w-4 h-4 absolute rounded-full top-0 left-0"></div>
+                      <div className="circle bg-gray-800 w-4 h-4 absolute rounded-full top-0 right-0"></div>
+                      <div className="circle bg-gray-800 w-4 h-4 absolute rounded-full bottom-0 left-0"></div>
+                      <div className="circle bg-gray-800 w-4 h-4 absolute rounded-full bottom-0 right-0"></div>
                   </div>
                 )}
               </div>
-            
             </div>
           </div>
         </section>
